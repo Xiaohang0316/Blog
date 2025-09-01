@@ -7,12 +7,18 @@ import {
   TextDocumentSyncKind,
   InitializeParams,
   InitializeResult,
+  CodeActionParams,
+  CodeAction,
+  CodeActionKind,
+  TextEdit,
+  Range,
+  Position,
 } from "vscode-languageserver/node";
 import { TextDocument } from "vscode-languageserver-textdocument";
 
 // 添加调试日志函数
 function debugLog(message: string) {
-  console.log(`[DEBUG] ${new Date().toISOString()} - ${message}`);
+  connection.console.log(`[DEBUG] ${new Date().toISOString()} - ${message}`);
 }
 
 // 创建连接
@@ -30,7 +36,7 @@ connection.console.log("🚀 Angular ControlFlow LSP Server 进程已启动");
 connection.onInitialize((params: InitializeParams): InitializeResult => {
   debugLog("收到初始化请求");
   connection.console.log("📝 收到客户端初始化请求");
-  
+
   const capabilities = params.capabilities;
   connection.console.log(`客户端能力: ${JSON.stringify(capabilities, null, 2)}`);
 
@@ -41,11 +47,12 @@ connection.onInitialize((params: InitializeParams): InitializeResult => {
         resolveProvider: true,
         triggerCharacters: ['@', '*', 'n']
       },
-      hoverProvider: false,
-      codeActionProvider: false,
-      diagnosticProvider: {
-        interFileDependencies: false,
-        workspaceDiagnostics: false
+      // 添加 Code Action 支持
+      codeActionProvider: {
+        codeActionKinds: [
+          CodeActionKind.QuickFix,
+          CodeActionKind.Refactor
+        ]
       }
     }
   };
@@ -83,7 +90,7 @@ documents.onDidClose((event) => {
 });
 
 // 计算位置的辅助函数
-function getPositionFromOffset(text: string, offset: number) {
+function getPositionFromOffset(text: string, offset: number): Position {
   const beforeOffset = text.substring(0, offset);
   const lines = beforeOffset.split('\n');
   return {
@@ -92,7 +99,75 @@ function getPositionFromOffset(text: string, offset: number) {
   };
 }
 
-// 检测和转换 Angular 指令
+// 获取完整元素的范围（包括开始和结束标签）
+function getElementRange(content: string, match: RegExpExecArray): Range {
+  const startPos = getPositionFromOffset(content, match.index);
+  const attributeEnd = match.index + match[0].length;
+  
+  // 查找元素的开始标签结束位置
+  let tagStart = match.index;
+  while (tagStart > 0 && content[tagStart] !== '<') {
+    tagStart--;
+  }
+  
+  // 查找标签名
+  const tagNameMatch = content.substring(tagStart).match(/<(\w+)/);
+  if (!tagNameMatch) {
+    // 如果找不到标签名，只返回属性范围
+    return {
+      start: startPos,
+      end: getPositionFromOffset(content, attributeEnd)
+    };
+  }
+  
+  const tagName = tagNameMatch[1];
+  
+  // 查找对应的结束标签或自闭合标签
+  let currentPos = attributeEnd;
+  let depth = 0;
+  let inTag = false;
+  let elementEnd = attributeEnd;
+  
+  // 检查是否为自闭合标签
+  const selfClosingMatch = content.substring(tagStart, currentPos + 10).match(/<[^>]*\/>/);
+  if (selfClosingMatch) {
+    elementEnd = tagStart + selfClosingMatch[0].length;
+  } else {
+    // 查找结束标签
+    while (currentPos < content.length) {
+      const char = content[currentPos];
+      
+      if (char === '<') {
+        const remaining = content.substring(currentPos);
+        const openTag = remaining.match(new RegExp(`^<${tagName}[^>]*>`));
+        const closeTag = remaining.match(new RegExp(`^</${tagName}>`));
+        
+        if (openTag) {
+          depth++;
+          currentPos += openTag[0].length;
+        } else if (closeTag) {
+          if (depth === 0) {
+            elementEnd = currentPos + closeTag[0].length;
+            break;
+          }
+          depth--;
+          currentPos += closeTag[0].length;
+        } else {
+          currentPos++;
+        }
+      } else {
+        currentPos++;
+      }
+    }
+  }
+  
+  return {
+    start: getPositionFromOffset(content, tagStart),
+    end: getPositionFromOffset(content, elementEnd)
+  };
+}
+
+// 升级版的 Angular 模板分析函数
 function analyzeAngularTemplate(document: TextDocument) {
   const content = document.getText();
   const diagnostics: Diagnostic[] = [];
@@ -105,21 +180,31 @@ function analyzeAngularTemplate(document: TextDocument) {
     let match;
     
     while ((match = ngIfRegex.exec(content)) !== null) {
-      const startPos = getPositionFromOffset(content, match.index);
-      const endPos = getPositionFromOffset(content, match.index + match[0].length);
+      const range = getElementRange(content, match);
+      const condition = match[1];
       
       debugLog(`发现 *ngIf: ${match[0]} 在位置 ${match.index}`);
       
+      // 生成新的控制流语法
+      const elementContent = content.substring(
+        content.indexOf('>', match.index) + 1,
+        content.lastIndexOf('<', content.indexOf(`</${getTagName(content, match.index)}`, match.index))
+      ).trim();
+      
+      const newControlFlow = `@if (${condition}) {\n  ${elementContent}\n}`;
+      
       diagnostics.push({
-        message: `💡 建议迁移到新的控制流: @if (${match[1]}) { ... }`,
-        range: { start: startPos, end: endPos },
+        message: `💡 建议迁移到新的控制流: @if (${condition}) { ... }`,
+        range,
         severity: DiagnosticSeverity.Information,
         source: "angular-control-flow",
         code: "MIGRATE_NGIF",
         data: {
-          condition: match[1],
+          condition,
           originalText: match[0],
-          suggestedText: `@if (${match[1]}) { }`
+          suggestedText: newControlFlow,
+          elementRange: range,
+          replacementText: newControlFlow
         }
       });
     }
@@ -128,25 +213,37 @@ function analyzeAngularTemplate(document: TextDocument) {
     const ngForRegex = /\*ngFor\s*=\s*"([^"]+)"/g;
     
     while ((match = ngForRegex.exec(content)) !== null) {
-      const startPos = getPositionFromOffset(content, match.index);
-      const endPos = getPositionFromOffset(content, match.index + match[0].length);
+      const range = getElementRange(content, match);
+      const forExpression = match[1];
       
       debugLog(`发现 *ngFor: ${match[0]} 在位置 ${match.index}`);
       
-      const forExpression = match[1];
-      let transformedFor = forExpression;
-      
       // 转换 ngFor 表达式
-      const letMatch = forExpression.match(/let\s+(\w+)\s+of\s+(.+?)(?:;\s*trackBy:\s*(\w+))?/);
+      let transformedFor = forExpression;
+      const letMatch = forExpression.match(/let\s+(\w+)\s+of\s+(.+?)(?:;\s*let\s+(\w+)\s*=\s*index)?(?:;\s*trackBy:\s*(\w+))?/);
+      
       if (letMatch) {
-        const [, itemVar, collection, trackBy] = letMatch;
+        const [, itemVar, collection, indexVar, trackBy] = letMatch;
         const trackExpression = trackBy || '$index';
         transformedFor = `${itemVar} of ${collection}; track ${trackExpression}`;
+        
+        // 如果有索引变量，添加到转换中
+        if (indexVar) {
+          transformedFor = `${itemVar} of ${collection}; let ${indexVar} = $index; track ${trackExpression}`;
+        }
       }
+      
+      // 生成新的控制流语法
+      const elementContent = content.substring(
+        content.indexOf('>', match.index) + 1,
+        content.lastIndexOf('<', content.indexOf(`</${getTagName(content, match.index)}`, match.index))
+      ).trim();
+      
+      const newControlFlow = `@for (${transformedFor}) {\n  ${elementContent}\n}`;
       
       diagnostics.push({
         message: `💡 建议迁移到新的控制流: @for (${transformedFor}) { ... }`,
-        range: { start: startPos, end: endPos },
+        range,
         severity: DiagnosticSeverity.Information,
         source: "angular-control-flow",
         code: "MIGRATE_NGFOR",
@@ -154,7 +251,38 @@ function analyzeAngularTemplate(document: TextDocument) {
           originalExpression: forExpression,
           transformedExpression: transformedFor,
           originalText: match[0],
-          suggestedText: `@for (${transformedFor}) { }`
+          suggestedText: newControlFlow,
+          elementRange: range,
+          replacementText: newControlFlow
+        }
+      });
+    }
+
+    // 检测 *ngSwitch
+    const ngSwitchRegex = /\*ngSwitch\s*=\s*"([^"]+)"/g;
+    
+    while ((match = ngSwitchRegex.exec(content)) !== null) {
+      const range = getElementRange(content, match);
+      const switchExpression = match[1];
+      
+      debugLog(`发现 *ngSwitch: ${match[0]} 在位置 ${match.index}`);
+      
+      // 查找相关的 *ngSwitchCase 和 *ngSwitchDefault
+      const switchCases = findSwitchCases(content, match.index);
+      const newSwitchFlow = generateSwitchControlFlow(switchExpression, switchCases);
+      
+      diagnostics.push({
+        message: `💡 建议迁移到新的控制流: @switch (${switchExpression}) { ... }`,
+        range,
+        severity: DiagnosticSeverity.Information,
+        source: "angular-control-flow",
+        code: "MIGRATE_NGSWITCH",
+        data: {
+          switchExpression,
+          originalText: match[0],
+          suggestedText: newSwitchFlow,
+          elementRange: range,
+          replacementText: newSwitchFlow
         }
       });
     }
@@ -167,6 +295,361 @@ function analyzeAngularTemplate(document: TextDocument) {
   }
 
   return diagnostics;
+}
+
+// 获取标签名的辅助函数
+function getTagName(content: string, offset: number): string {
+  let tagStart = offset;
+  while (tagStart > 0 && content[tagStart] !== '<') {
+    tagStart--;
+  }
+  
+  const tagMatch = content.substring(tagStart).match(/<(\w+)/);
+  return tagMatch ? tagMatch[1] : 'div';
+}
+
+// 查找 switch cases 的辅助函数
+function findSwitchCases(content: string, switchOffset: number): Array<{type: 'case' | 'default', value?: string, content: string}> {
+  const cases: Array<{type: 'case' | 'default', value?: string, content: string}> = [];
+  
+  // 这里可以添加更复杂的逻辑来查找相关的 switch cases
+  // 简化版本，返回示例结构
+  return cases;
+}
+
+// 生成 switch 控制流的辅助函数
+function generateSwitchControlFlow(expression: string, cases: Array<{type: 'case' | 'default', value?: string, content: string}>): string {
+  let result = `@switch (${expression}) {\n`;
+  
+  for (const case_ of cases) {
+    if (case_.type === 'case') {
+      result += `  @case (${case_.value}) {\n    ${case_.content}\n  }\n`;
+    } else {
+      result += `  @default {\n    ${case_.content}\n  }\n`;
+    }
+  }
+  
+  result += '}';
+  return result;
+}
+
+// Code Action 处理器
+connection.onCodeAction((params: CodeActionParams) => {
+  debugLog(`收到 Code Action 请求: ${params.textDocument.uri}`);
+  
+  const document = documents.get(params.textDocument.uri);
+  if (!document) {
+    debugLog("找不到对应的文档");
+    return [];
+  }
+
+  const actions: CodeAction[] = [];
+  
+  // 遍历范围内的诊断
+  for (const diagnostic of params.context.diagnostics) {
+    if (diagnostic.source !== "angular-control-flow") {
+      continue;
+    }
+
+    const data = diagnostic.data as any;
+    if (!data) {
+      continue;
+    }
+
+    switch (diagnostic.code) {
+      case "MIGRATE_NGIF":
+        actions.push(createNgIfCodeAction(document, diagnostic, data));
+        break;
+      
+      case "MIGRATE_NGFOR":
+        actions.push(createNgForCodeAction(document, diagnostic, data));
+        break;
+        
+      case "MIGRATE_NGSWITCH":
+        actions.push(createNgSwitchCodeAction(document, diagnostic, data));
+        break;
+    }
+  }
+
+  // 添加批量替换所有的 Code Action
+  if (actions.length > 0) {
+    actions.push(createBatchReplaceAction(document));
+  }
+
+  debugLog(`返回 ${actions.length} 个 Code Actions`);
+  return actions;
+});
+
+// 创建 *ngIf 的 Code Action
+function createNgIfCodeAction(document: TextDocument, diagnostic: Diagnostic, data: any): CodeAction {
+  const content = document.getText();
+  const elementRange = data.elementRange;
+  
+  // 获取元素的完整内容
+  const elementText = document.getText(elementRange);
+  
+  // 解析元素结构
+  const tagMatch = elementText.match(/<(\w+)([^>]*?)(\*ngIf="[^"]+")([^>]*?)>(.*?)<\/\1>/s);
+  if (!tagMatch) {
+    // 处理自闭合标签或简单情况
+    const simpleMatch = elementText.match(/<(\w+)([^>]*?)(\*ngIf="[^"]+")([^>]*?)\/?>/);
+    if (simpleMatch) {
+      const [, tagName, beforeAttr, ngIfAttr, afterAttr] = simpleMatch;
+      const condition = ngIfAttr.match(/\*ngIf="([^"]+)"/)?.[1] || data.condition;
+      const cleanAttrs = (beforeAttr + afterAttr).trim();
+      const newElement = cleanAttrs ? `<${tagName} ${cleanAttrs} />` : `<${tagName} />`;
+      const replacement = `@if (${condition}) {\n  ${newElement}\n}`;
+      
+      return {
+        title: `🔄 替换为 @if (${condition})`,
+        kind: CodeActionKind.QuickFix,
+        diagnostics: [diagnostic],
+        edit: {
+          changes: {
+            [document.uri]: [{
+              range: elementRange,
+              newText: replacement
+            }]
+          }
+        }
+      };
+    }
+  } else {
+    const [, tagName, beforeAttr, ngIfAttr, afterAttr, innerContent] = tagMatch;
+    const condition = data.condition;
+    const cleanAttrs = (beforeAttr + afterAttr).trim();
+    const newElement = cleanAttrs 
+      ? `<${tagName} ${cleanAttrs}>${innerContent}</${tagName}>`
+      : `<${tagName}>${innerContent}</${tagName}>`;
+    
+    const replacement = `@if (${condition}) {\n  ${newElement}\n}`;
+    
+    return {
+      title: `🔄 替换为 @if (${condition})`,
+      kind: CodeActionKind.QuickFix,
+      diagnostics: [diagnostic],
+      edit: {
+        changes: {
+          [document.uri]: [{
+            range: elementRange,
+            newText: replacement
+          }]
+        }
+      }
+    };
+  }
+
+  // 默认回退
+  return {
+    title: `🔄 替换为新的 @if 控制流`,
+    kind: CodeActionKind.QuickFix,
+    diagnostics: [diagnostic],
+    edit: {
+      changes: {
+        [document.uri]: [{
+          range: diagnostic.range,
+          newText: `@if (${data.condition})`
+        }]
+      }
+    }
+  };
+}
+
+// 创建 *ngFor 的 Code Action
+function createNgForCodeAction(document: TextDocument, diagnostic: Diagnostic, data: any): CodeAction {
+  const content = document.getText();
+  const elementRange = data.elementRange;
+  const elementText = document.getText(elementRange);
+  
+  // 解析 *ngFor 表达式
+  const forExpression = data.originalExpression;
+  let transformedFor = data.transformedExpression;
+  
+  // 更智能的 ngFor 转换
+  const letMatch = forExpression.match(/let\s+(\w+)\s+of\s+(.+?)(?:;\s*let\s+(\w+)\s*=\s*index)?(?:;\s*trackBy:\s*(\w+))?/);
+  if (letMatch) {
+    const [, itemVar, collection, indexVar, trackBy] = letMatch;
+    const trackExpression = trackBy || '$index';
+    
+    if (indexVar) {
+      transformedFor = `${itemVar} of ${collection}; let ${indexVar} = $index; track ${trackExpression}`;
+    } else {
+      transformedFor = `${itemVar} of ${collection}; track ${trackExpression}`;
+    }
+  }
+  
+  // 解析元素结构
+  const tagMatch = elementText.match(/<(\w+)([^>]*?)(\*ngFor="[^"]+")([^>]*?)>(.*?)<\/\1>/s);
+  if (tagMatch) {
+    const [, tagName, beforeAttr, ngForAttr, afterAttr, innerContent] = tagMatch;
+    const cleanAttrs = (beforeAttr + afterAttr).trim();
+    const newElement = cleanAttrs 
+      ? `<${tagName} ${cleanAttrs}>${innerContent}</${tagName}>`
+      : `<${tagName}>${innerContent}</${tagName}>`;
+    
+    const replacement = `@for (${transformedFor}) {\n  ${newElement}\n}`;
+    
+    return {
+      title: `🔄 替换为 @for (${transformedFor.split(';')[0]})`,
+      kind: CodeActionKind.QuickFix,
+      diagnostics: [diagnostic],
+      edit: {
+        changes: {
+          [document.uri]: [{
+            range: elementRange,
+            newText: replacement
+          }]
+        }
+      }
+    };
+  }
+
+  // 处理自闭合标签
+  const simpleMatch = elementText.match(/<(\w+)([^>]*?)(\*ngFor="[^"]+")([^>]*?)\/?>/);
+  if (simpleMatch) {
+    const [, tagName, beforeAttr, ngForAttr, afterAttr] = simpleMatch;
+    const cleanAttrs = (beforeAttr + afterAttr).trim();
+    const newElement = cleanAttrs ? `<${tagName} ${cleanAttrs} />` : `<${tagName} />`;
+    const replacement = `@for (${transformedFor}) {\n  ${newElement}\n}`;
+    
+    return {
+      title: `🔄 替换为 @for (${transformedFor.split(';')[0]})`,
+      kind: CodeActionKind.QuickFix,
+      diagnostics: [diagnostic],
+      edit: {
+        changes: {
+          [document.uri]: [{
+            range: elementRange,
+            newText: replacement
+          }]
+        }
+      }
+    };
+  }
+
+  // 默认回退
+  return {
+    title: `🔄 替换为新的 @for 控制流`,
+    kind: CodeActionKind.QuickFix,
+    diagnostics: [diagnostic],
+    edit: {
+      changes: {
+        [document.uri]: [{
+          range: diagnostic.range,
+          newText: `@for (${transformedFor})`
+        }]
+      }
+    }
+  };
+}
+
+// 创建 *ngSwitch 的 Code Action
+function createNgSwitchCodeAction(document: TextDocument, diagnostic: Diagnostic, data: any): CodeAction {
+  const replacement = data.replacementText || `@switch (${data.switchExpression}) {\n  // TODO: 添加 @case 和 @default 块\n}`;
+  
+  return {
+    title: `🔄 替换为 @switch (${data.switchExpression})`,
+    kind: CodeActionKind.QuickFix,
+    diagnostics: [diagnostic],
+    edit: {
+      changes: {
+        [document.uri]: [{
+          range: data.elementRange,
+          newText: replacement
+        }]
+      }
+    }
+  };
+}
+
+// 创建批量替换所有的 Code Action
+function createBatchReplaceAction(document: TextDocument): CodeAction {
+  const content = document.getText();
+  const edits: TextEdit[] = [];
+  
+  // 收集所有需要替换的内容
+  const allMatches: Array<{range: Range, replacement: string}> = [];
+  
+  // 处理 *ngIf
+  const ngIfRegex = /\*ngIf\s*=\s*"([^"]+)"/g;
+  let match;
+  
+  while ((match = ngIfRegex.exec(content)) !== null) {
+    const range = getElementRange(content, match);
+    const condition = match[1];
+    const elementText = document.getText(range);
+    
+    // 生成替换文本
+    const tagMatch = elementText.match(/<(\w+)([^>]*?)(\*ngIf="[^"]+")([^>]*?)>(.*?)<\/\1>/s);
+    if (tagMatch) {
+      const [, tagName, beforeAttr, , afterAttr, innerContent] = tagMatch;
+      const cleanAttrs = (beforeAttr + afterAttr).trim();
+      const newElement = cleanAttrs 
+        ? `<${tagName} ${cleanAttrs}>${innerContent}</${tagName}>`
+        : `<${tagName}>${innerContent}</${tagName}>`;
+      
+      const replacement = `@if (${condition}) {\n  ${newElement}\n}`;
+      allMatches.push({ range, replacement });
+    }
+  }
+  
+  // 处理 *ngFor
+  const ngForRegex = /\*ngFor\s*=\s*"([^"]+)"/g;
+  
+  while ((match = ngForRegex.exec(content)) !== null) {
+    const range = getElementRange(content, match);
+    const forExpression = match[1];
+    const elementText = document.getText(range);
+    
+    // 转换表达式
+    let transformedFor = forExpression;
+    const letMatch = forExpression.match(/let\s+(\w+)\s+of\s+(.+?)(?:;\s*let\s+(\w+)\s*=\s*index)?(?:;\s*trackBy:\s*(\w+))?/);
+    
+    if (letMatch) {
+      const [, itemVar, collection, indexVar, trackBy] = letMatch;
+      const trackExpression = trackBy || '$index';
+      
+      if (indexVar) {
+        transformedFor = `${itemVar} of ${collection}; let ${indexVar} = $index; track ${trackExpression}`;
+      } else {
+        transformedFor = `${itemVar} of ${collection}; track ${trackExpression}`;
+      }
+    }
+    
+    // 生成替换文本
+    const tagMatch = elementText.match(/<(\w+)([^>]*?)(\*ngFor="[^"]+")([^>]*?)>(.*?)<\/\1>/s);
+    if (tagMatch) {
+      const [, tagName, beforeAttr, , afterAttr, innerContent] = tagMatch;
+      const cleanAttrs = (beforeAttr + afterAttr).trim();
+      const newElement = cleanAttrs 
+        ? `<${tagName} ${cleanAttrs}>${innerContent}</${tagName}>`
+        : `<${tagName}>${innerContent}</${tagName}>`;
+      
+      const replacement = `@for (${transformedFor}) {\n  ${newElement}\n}`;
+      allMatches.push({ range, replacement });
+    }
+  }
+  
+  // 按位置排序（从后往前替换，避免位置偏移）
+  allMatches.sort((a, b) => {
+    if (a.range.start.line !== b.range.start.line) {
+      return b.range.start.line - a.range.start.line;
+    }
+    return b.range.start.character - a.range.start.character;
+  });
+  
+  return {
+    title: `🚀 批量替换所有旧控制流 (${allMatches.length} 处)`,
+    kind: CodeActionKind.Refactor,
+    edit: {
+      changes: {
+        [document.uri]: allMatches.map(item => ({
+          range: item.range,
+          newText: item.replacement
+        }))
+      }
+    }
+  };
 }
 
 // 文档验证函数
@@ -192,62 +675,6 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
   }
 }
 
-// 自动完成
-connection.onCompletion((textDocumentPosition) => {
-  debugLog("收到自动完成请求");
-  connection.console.log("🔤 处理自动完成请求");
-  
-  const document = documents.get(textDocumentPosition.textDocument.uri);
-  if (!document) {
-    debugLog("文档不存在");
-    return [];
-  }
-
-  const position = textDocumentPosition.position;
-  const text = document.getText();
-  const lines = text.split('\n');
-  
-  if (position.line >= lines.length) return [];
-  
-  const lineText = lines[position.line];
-  const beforeCursor = lineText.substring(0, position.character);
-
-  debugLog(`自动完成上下文: "${beforeCursor}"`);
-
-  const completions = [];
-
-  // @ 符号补全
-  if (beforeCursor.endsWith('@')) {
-    debugLog("提供 @ 控制流补全");
-    completions.push(
-      {
-        label: '@if',
-        kind: 15, // CompletionItemKind.Snippet
-        insertText: 'if (${1:condition}) {\n  ${2:content}\n}',
-        insertTextFormat: 2,
-        documentation: 'Angular 新的 if 控制流',
-      },
-      {
-        label: '@for',
-        kind: 15,
-        insertText: 'for (${1:item} of ${2:items}; track ${3:$index}) {\n  ${4:content}\n}',
-        insertTextFormat: 2,
-        documentation: 'Angular 新的 for 控制流',
-      },
-      {
-        label: '@switch',
-        kind: 15,
-        insertText: 'switch (${1:expression}) {\n  @case (${2:value}) {\n    ${3:content}\n  }\n  @default {\n    ${4:default content}\n  }\n}',
-        insertTextFormat: 2,
-        documentation: 'Angular 新的 switch 控制流',
-      }
-    );
-  }
-
-  debugLog(`返回 ${completions.length} 个补全项`);
-  return completions;
-});
-
 // 监听文档变化
 documents.listen(connection);
 
@@ -257,13 +684,3 @@ connection.listen();
 // 最后的日志
 debugLog("服务器监听已启动");
 connection.console.log("🚀 Angular ControlFlow LSP Server 已准备就绪！");
-
-// 进程退出处理
-process.on('exit', () => {
-  debugLog("服务器进程退出");
-});
-
-process.on('uncaughtException', (error) => {
-  debugLog(`未捕获异常: ${error}`);
-  connection.console.error(`❌ 未捕获异常: ${error}`);
-});

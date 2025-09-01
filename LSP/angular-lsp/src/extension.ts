@@ -36,10 +36,10 @@ export function activate(context: vscode.ExtensionContext) {
     run: { 
       module: serverModule, 
       transport: TransportKind.ipc,
-      options: { 
-        cwd: context.extensionPath,
-        env: { ...process.env, NODE_ENV: 'production' }
-      }
+      // options: { 
+      //   cwd: context.extensionPath,
+      //   env: { ...process.env, NODE_ENV: 'production' }
+      // }
     },
     debug: {
       module: serverModule,
@@ -50,8 +50,8 @@ export function activate(context: vscode.ExtensionContext) {
           `--inspect=${debugPort}`,
           "--enable-source-maps"
         ],
-        cwd: context.extensionPath,
-        env: { ...process.env, NODE_ENV: 'development' }
+        // cwd: context.extensionPath,
+        // env: { ...process.env, NODE_ENV: 'development' }
       },
     },
   };
@@ -59,25 +59,26 @@ export function activate(context: vscode.ExtensionContext) {
   const clientOptions: LanguageClientOptions = {
     documentSelector: [
       { scheme: 'file', language: 'html' },
-      { scheme: 'file', language: 'angular' },
-      { scheme: 'file', language: 'typescript' },
-      { scheme: 'file', language: 'javascript' }
+      // { scheme: 'file', language: 'angular' },
+      // { scheme: 'file', language: 'typescript' },
+      // { scheme: 'file', language: 'javascript' }
     ],
     synchronize: {
-      fileEvents: vscode.workspace.createFileSystemWatcher("**/*.{html,ts,js}"),
+      // fileEvents: vscode.workspace.createFileSystemWatcher("**/*.{html,ts,js}"),
+      fileEvents: vscode.workspace.createFileSystemWatcher("**/*.html"),
     },
-    outputChannel: vscode.window.createOutputChannel('Angular ControlFlow LSP'),
-    traceOutputChannel: vscode.window.createOutputChannel('Angular ControlFlow LSP Trace'),
-    errorHandler: {
-      error: (error, message, count) => {
-        console.error('LSP Error:', error, message, count);
-        return { action: 1 }; // ErrorAction.Continue
-      },
-      closed: () => {
-        console.log('LSP Connection closed');
-        return { action: 1 }; // CloseAction.DoNotRestart
-      }
-    }
+    // outputChannel: vscode.window.createOutputChannel('Angular ControlFlow LSP'),
+    // traceOutputChannel: vscode.window.createOutputChannel('Angular ControlFlow LSP Trace'),
+    // errorHandler: {
+    //   error: (error, message, count) => {
+    //     console.error('LSP Error:', error, message, count);
+    //     return { action: 1 }; // ErrorAction.Continue
+    //   },
+    //   closed: () => {
+    //     console.log('LSP Connection closed');
+    //     return { action: 1 }; // CloseAction.DoNotRestart
+    //   }
+    // }
   };
 
   client = new LanguageClient(
