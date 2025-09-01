@@ -92,20 +92,148 @@ LSP 的工作机制可以类比为 **前端调用后端 API**：
      2. 语言服务部分负责扫描 .html 文件，找出 *ngIf 和 *ngFor 并发出诊断信息。
   2. 核心逻辑
      1. 在 LSP 的 onDidChangeContent 事件里，读取文档内容。
-     2. 利用 @angular/compiler 提供的 Angular 模板解析器（parseTemplate），它能把 .html 转换成 AST。然后我们在 LSP 中
+     2. 利用正则截取对应的代码再拼接
      3. 读取文档
-     4. 用 AST 找到有 *ngIf / *ngFor 的节点
+     4. 用 正则 找到有 *ngIf / *ngFor 的节点
      5. 构造 Quick Fix，把整个元素替换成 block 形式
-     6. 返回 Diagnostic[]，VS Code 就会在文件中打红线。
+     6. 返回 Diagnostic[]，VS Code 就会在文件中打黄线。
   3. 项目结构
       ```js
       angular-lsp/
-        ├── client/   (VSCode 插件)
-        ├── server/   (语言服务器)
+        ├── src/   (VSCode 插件)
+            ├── extension.ts/   (Client)
+            ├── server/   (语言服务器)
+              ├── server.ts/   (语言服务器)
         ├── package.json
       ```
+  4. 代码 
+    Server 
+    ```js
+    // 升级版的 Angular 模板分析函数
+    function analyzeAngularTemplate(document: TextDocument) {
+      const content = document.getText();
+      const diagnostics: Diagnostic[] = [];
+      
+      debugLog("开始分析 Angular 模板");
+      // 检测 *ngIf
+      const ngIfRegex = /\*ngIf\s*=\s*"([^"]+)"/g;
+      let match;
+      
+      while ((match = ngIfRegex.exec(content)) !== null) {
+        const range = getElementRange(content, match);
+        const condition = match[1];
+        
+        debugLog(`发现 *ngIf: ${match[0]} 在位置 ${match.index}`);
+        
+        // 生成新的控制流语法
+        const elementContent = content.substring(
+          content.indexOf('>', match.index) + 1,
+          content.lastIndexOf('<', content.indexOf(`</${getTagName(content, match.index)}`, match.index))
+        ).trim();
+        
+        const newControlFlow = `@if (${condition}) {\n  ${elementContent}\n}`;
+        
+        diagnostics.push({
+          message: `💡 建议迁移到新的控制流: @if (${condition}) { ... }`,
+          range,
+          severity: DiagnosticSeverity.Warning,
+          source: "angular-control-flow",
+          code: "MIGRATE_NGIF",
+          data: {
+            condition,
+            originalText: match[0],
+            suggestedText: newControlFlow,
+            elementRange: range,
+            replacementText: newControlFlow
+          }
+        });
+      }
+      return diagnostics;
+    }
 
+    function createNgIfCodeAction(document: TextDocument, diagnostic: Diagnostic, data: any): CodeAction {
+      const content = document.getText();
+      const elementRange = data.elementRange;
+      
+      // 获取元素的完整内容
+      const elementText = document.getText(elementRange);
+      
+      // 解析元素结构
+      const tagMatch = elementText.match(/<(\w+)([^>]*?)(\*ngIf="[^"]+")([^>]*?)>(.*?)<\/\1>/s);
+      if (!tagMatch) {
+        // 处理自闭合标签或简单情况
+        const simpleMatch = elementText.match(/<(\w+)([^>]*?)(\*ngIf="[^"]+")([^>]*?)\/?>/);
+        if (simpleMatch) {
+          const [, tagName, beforeAttr, ngIfAttr, afterAttr] = simpleMatch;
+          const condition = ngIfAttr.match(/\*ngIf="([^"]+)"/)?.[1] || data.condition;
+          const cleanAttrs = (beforeAttr + afterAttr).trim();
+          const newElement = cleanAttrs ? `<${tagName} ${cleanAttrs} />` : `<${tagName} />`;
+          const replacement = `@if (${condition}) {\n  ${newElement}\n}`;
+          
+          return {
+            title: `🔄 替换为 @if (${condition})`,
+            kind: CodeActionKind.QuickFix,
+            diagnostics: [diagnostic],
+            edit: {
+              changes: {
+                [document.uri]: [{
+                  range: elementRange,
+                  newText: replacement
+                }]
+              }
+            }
+          };
+        }
+      } else {
+        const [, tagName, beforeAttr, ngIfAttr, afterAttr, innerContent] = tagMatch;
+        const condition = data.condition;
+        const cleanAttrs = (beforeAttr + afterAttr).trim();
+        const newElement = cleanAttrs 
+          ? `<${tagName} ${cleanAttrs}>${innerContent}</${tagName}>`
+          : `<${tagName}>${innerContent}</${tagName}>`;
+        
+        const replacement = `@if (${condition}) {\n  ${newElement}\n}`;
+        
+        return {
+          title: `🔄 替换为 @if (${condition})`,
+          kind: CodeActionKind.QuickFix,
+          diagnostics: [diagnostic],
+          edit: {
+            changes: {
+              [document.uri]: [{
+                range: elementRange,
+                newText: replacement
+              }]
+            }
+          }
+        };
+      }
 
+      // 默认回退
+      return {
+        title: `🔄 替换为新的 @if 控制流`,
+        kind: CodeActionKind.QuickFix,
+        diagnostics: [diagnostic],
+        edit: {
+          changes: {
+            [document.uri]: [{
+              range: diagnostic.range,
+              newText: `@if (${data.condition})`
+            }]
+          }
+        }
+      };
+    }
+    ```
+
+    完整代码 https://github.com/Xiaohang0316/Blog/tree/master/LSP/angular-lsp
+  5. 效果图 
+展示下划线，提出建议
+![alt text](image.png)
+一键替换 旧 control flow 
+![alt text](image-3.png)
+替换效果
+![alt text](image-2.png)
 
 
 
@@ -118,10 +246,10 @@ LSP 的工作机制可以类比为 **前端调用后端 API**：
 
 ---
 
-### 7. 总结  
+<!-- ### 7. 总结  
 - LSP 是一种 **解耦语言智能与编辑器的协议**  
 - **核心思想**：语言功能由 Server 提供，编辑器只负责调用  
-- **价值**：提升开发效率，减少重复开发，推动工具链标准化  
+- **价值**：提升开发效率，减少重复开发，推动工具链标准化   -->
 
 
 ---

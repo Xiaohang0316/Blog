@@ -196,7 +196,7 @@ function analyzeAngularTemplate(document: TextDocument) {
       diagnostics.push({
         message: `💡 建议迁移到新的控制流: @if (${condition}) { ... }`,
         range,
-        severity: DiagnosticSeverity.Information,
+        severity: DiagnosticSeverity.Warning,
         source: "angular-control-flow",
         code: "MIGRATE_NGIF",
         data: {
@@ -244,7 +244,7 @@ function analyzeAngularTemplate(document: TextDocument) {
       diagnostics.push({
         message: `💡 建议迁移到新的控制流: @for (${transformedFor}) { ... }`,
         range,
-        severity: DiagnosticSeverity.Information,
+        severity: DiagnosticSeverity.Warning,
         source: "angular-control-flow",
         code: "MIGRATE_NGFOR",
         data: {
@@ -274,7 +274,7 @@ function analyzeAngularTemplate(document: TextDocument) {
       diagnostics.push({
         message: `💡 建议迁移到新的控制流: @switch (${switchExpression}) { ... }`,
         range,
-        severity: DiagnosticSeverity.Information,
+        severity: DiagnosticSeverity.Warning,
         source: "angular-control-flow",
         code: "MIGRATE_NGSWITCH",
         data: {
