@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSS vs JS 表格样式性能对比</title>
+    <link rel="stylesheet" href="../index.css">
     <style>
         * {
             margin: 0;
@@ -12,8 +13,6 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px;
             min-height: 100vh;
         }
@@ -240,6 +239,13 @@
     </style>
 </head>
 <body>
+    <!-- 背景粒子 -->
+    <div class="particle" style="width: 80px; height: 80px; top: 10%; left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="width: 60px; height: 60px; top: 70%; left: 80%; animation-delay: 2s;"></div>
+    <div class="particle" style="width: 100px; height: 100px; top: 40%; left: 5%; animation-delay: 4s;"></div>
+    <div class="particle" style="width: 70px; height: 70px; top: 20%; left: 85%; animation-delay: 1s;"></div>
+    <div class="particle" style="width: 90px; height: 90px; top: 80%; left: 15%; animation-delay: 3s;"></div>
+
     <button class="btn" onclick="window.location.href='../'">
         ← 返回
     </button>
