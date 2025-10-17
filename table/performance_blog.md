@@ -324,6 +324,11 @@ worker.onmessage = (e) => renderTable(e.data);
 ---
 
 ## table 测试链接 
+
+https://xiaohang0316.github.io/Blog/table/table_performance_demo.html
+
+## 测试代码
+
 https://github.com/Xiaohang0316/Blog/blob/master/table/table_performance_demo.html
 
 ![alt text](image.png)
