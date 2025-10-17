@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS vs JS 表格样式性能对比</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .control-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .control-group input, .control-group button {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .control-group button {
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .control-group button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .results {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .results h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            background: #f7f7f7;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+
+        .metric span:first-child {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .metric span:last-child {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .tables-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .table-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .table-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .table-container {
+            max-height: 600px;
+            overflow: auto;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+        }
+
+        /* CSS 样式表格 */
+        #css-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #css-table thead {
+            position: sticky;
+            top: 0;
+            background: #667eea;
+            z-index: 10;
+        }
+
+        #css-table th {
+            padding: 12px;
+            color: white;
+            font-weight: 600;
+            text-align: left;
+            border-bottom: 2px solid #5568d3;
+        }
+
+        #css-table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        #css-table tbody tr:hover {
+            background-color: #e3e7ff;
+            transition: background-color 0.2s;
+        }
+
+        #css-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #333;
+        }
+
+        /* JS 样式表格 */
+        #js-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #js-table thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        @media (max-width: 1024px) {
+            .tables-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .winner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <button class="btn" onclick="window.location.href='../'">
+        ← 返回
+    </button>
+    <div class="container">
+        <h1>🚀 CSS vs JS 表格样式性能对比</h1>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>行数:</label>
+                <input type="number" id="rowCount" value="1000" min="100" max="10000" step="100">
+                <button onclick="runTest()">开始测试</button>
+                <button onclick="clearTables()">清空表格</button>
+            </div>
+        </div>
+
+        <div class="results" id="results" style="display:none;">
+            <h2>📊 性能测试结果</h2>
+            <div class="metric">
+                <span>CSS 渲染时间:</span>
+                <span id="css-time">-</span>
+            </div>
+            <div class="metric">
+                <span>JS 渲染时间:</span>
+                <span id="js-time">-</span>
+            </div>
+            <div class="metric">
+                <span>性能差异:</span>
+                <span id="difference">-</span>
+            </div>
+            <div id="winner-text"></div>
+        </div>
+
+        <div class="tables-wrapper">
+            <div class="table-section">
+                <h2>🎨 CSS 样式表格</h2>
+                <div class="table-container">
+                    <table id="css-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>姓名</th>
+                                <th>邮箱</th>
+                                <th>分数</th>
+                            </tr>
+                        </thead>
+                        <tbody id="css-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="table-section">
+                <h2>⚙️ JS 样式表格</h2>
+                <div class="table-container">
+                    <table id="js-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>姓名</th>
+                                <th>邮箱</th>
+                                <th>分数</th>
+                            </tr>
+                        </thead>
+                        <tbody id="js-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateRowData(count) {
+            const names = ['张三', '李四', '王五', '赵六', '钱七', '孙八', '周九', '吴十'];
+            const data = [];
+            for (let i = 0; i < count; i++) {
+                data.push({
+                    id: i + 1,
+                    name: names[i % names.length] + i,
+                    email: `user${i}@example.com`,
+                    score: Math.floor(Math.random() * 100)
+                });
+            }
+            return data;
+        }
+
+        function renderCSSTable(data) {
+            const tbody = document.getElementById('css-tbody');
+            const startTime = performance.now();
+            
+            let html = '';
+            data.forEach(row => {
+                html += `
+                    <tr>
+                        <td>${row.id}</td>
+                        <td>${row.name}</td>
+                        <td>${row.email}</td>
+                        <td>${row.score}</td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+            
+            const endTime = performance.now();
+            return endTime - startTime;
+        }
+
+        function renderJSTable(data) {
+            const tbody = document.getElementById('js-tbody');
+            const startTime = performance.now();
+            
+            let html = '';
+            data.forEach((row, index) => {
+                const bgColor = index % 2 === 0 ? '#ffffff' : '#f8f9fa';
+                html += `
+                    <tr style="background-color: ${bgColor};" 
+                        onmouseover="this.style.backgroundColor='#e3e7ff'" 
+                        onmouseout="this.style.backgroundColor='${bgColor}'">
+                        <td style="padding: 10px 12px; border-bottom: 1px solid #e0e0e0; color: #333;">${row.id}</td>
+                        <td style="padding: 10px 12px; border-bottom: 1px solid #e0e0e0; color: #333;">${row.name}</td>
+                        <td style="padding: 10px 12px; border-bottom: 1px solid #e0e0e0; color: #333;">${row.email}</td>
+                        <td style="padding: 10px 12px; border-bottom: 1px solid #e0e0e0; color: #333;">${row.score}</td>
+                    </tr>
+                `;
+            });
+            
+            // 为表头添加样式
+            const jsTable = document.getElementById('js-table');
+            const thead = jsTable.querySelector('thead');
+            thead.style.backgroundColor = '#667eea';
+            const headers = thead.querySelectorAll('th');
+            headers.forEach(th => {
+                th.style.padding = '12px';
+                th.style.color = 'white';
+                th.style.fontWeight = '600';
+                th.style.textAlign = 'left';
+                th.style.borderBottom = '2px solid #5568d3';
+            });
+            
+            tbody.innerHTML = html;
+            
+            const endTime = performance.now();
+            return endTime - startTime;
+        }
+
+        function runTest() {
+            const rowCount = parseInt(document.getElementById('rowCount').value);
+            const data = generateRowData(rowCount);
+            
+            // 测试 CSS 样式
+            const cssTime = renderCSSTable(data);
+            
+            // 测试 JS 样式
+            const jsTime = renderJSTable(data);
+            
+            // 显示结果
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('css-time').textContent = `${cssTime.toFixed(2)} ms`;
+            document.getElementById('js-time').textContent = `${jsTime.toFixed(2)} ms`;
+            
+            const diff = ((jsTime - cssTime) / cssTime * 100).toFixed(2);
+            const diffText = jsTime > cssTime 
+                ? `JS 比 CSS 慢 ${diff}%` 
+                : `CSS 比 JS 慢 ${Math.abs(diff)}%`;
+            document.getElementById('difference').textContent = diffText;
+            
+            const winner = cssTime < jsTime ? 'CSS' : 'JS';
+            const winnerColor = cssTime < jsTime ? '#667eea' : '#764ba2';
+            document.getElementById('winner-text').innerHTML = 
+                `<div class="winner">🏆 获胜者: ${winner} 样式方案</div>`;
+        }
+
+        function clearTables() {
+            document.getElementById('css-tbody').innerHTML = '';
+            document.getElementById('js-tbody').innerHTML = '';
+            document.getElementById('results').style.display = 'none';
+        }
+
+        // 页面加载时运行一次测试
+        window.addEventListener('load', () => {
+            runTest();
+        });
+    </script>
+</body>
+</html>
