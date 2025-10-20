@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>while vs forEach 性能对比</title>
+    <link rel="stylesheet" href="../index.css">
+    <style>
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .intro {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .intro h2 {
+            color: #f5576c;
+            margin-bottom: 15px;
+        }
+
+        .intro p {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .control-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: #333;
+            min-width: 120px;
+        }
+
+        .control-group input, .control-group select {
+            padding: 10px 15px;
+            border: 2px solid #f5576c;
+            border-radius: 6px;
+            font-size: 16px;
+            min-width: 200px;
+        }
+
+        .control-group button {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .control-group button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        .test-info {
+            background: #fff3f5;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #f5576c;
+        }
+
+        .test-info strong {
+            color: #f5576c;
+        }
+
+        .results {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .results h2 {
+            color: #f5576c;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .method-result {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .method-result.winner {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            transform: scale(1.05);
+        }
+
+        .method-result h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .method-result.winner h3::after {
+            content: '🏆';
+            font-size: 1.2em;
+        }
+
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            background: white;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 4px solid #f5576c;
+        }
+
+        .metric-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .metric-value {
+            color: #f5576c;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .summary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .summary h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .summary p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .chart-container h2 {
+            color: #f5576c;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .bar-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bar-label {
+            min-width: 100px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .bar-container {
+            flex: 1;
+            height: 40px;
+            background: #e9ecef;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 15px;
+            color: white;
+            font-weight: 700;
+            transition: width 1s ease-out;
+        }
+
+        .code-comparison {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .code-comparison h2 {
+            color: #f5576c;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .code-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .code-block {
+            background: #282c34;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .code-block h3 {
+            color: #61dafb;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .code-block pre {
+            color: #abb2bf;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .code-block .keyword {
+            color: #c678dd;
+        }
+
+        .code-block .function {
+            color: #61dafb;
+        }
+
+        .code-block .string {
+            color: #98c379;
+        }
+
+        .code-block .number {
+            color: #d19a66;
+        }
+
+        .code-block .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        @media (max-width: 1024px) {
+            .comparison-grid, .code-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #f5576c;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #f5576c;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+        <!-- 背景粒子 -->
+    <div class="particle" style="width: 80px; height: 80px; top: 10%; left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="width: 60px; height: 60px; top: 70%; left: 80%; animation-delay: 2s;"></div>
+    <div class="particle" style="width: 100px; height: 100px; top: 40%; left: 5%; animation-delay: 4s;"></div>
+    <div class="particle" style="width: 70px; height: 70px; top: 20%; left: 85%; animation-delay: 1s;"></div>
+    <div class="particle" style="width: 90px; height: 90px; top: 80%; left: 15%; animation-delay: 3s;"></div>
+
+
+    <button class="btn" onclick="window.location.href='../'">
+        ← 返回
+    </button>
+    <div class="container">
+        <h1>🔄 while vs forEach 循环性能对比</h1>
+
+        <div class="intro">
+            <h2>测试说明</h2>
+            <p>本演示对比了 JavaScript 中两种常用循环方式的性能差异：</p>
+            <p><strong>while 循环</strong>：传统的低级循环，直接操作索引，性能最优</p>
+            <p><strong>forEach</strong>：ES5 引入的高级迭代方法，代码更优雅但有函数调用开销</p>
+        </div>
+
+        <div class="controls">
+            <h2 style="margin-bottom: 20px; color: #f5576c;">测试配置</h2>
+            
+            <div class="control-group">
+                <label>数组大小:</label>
+                <input type="number" id="arraySize" value="1000000" min="10000" max="10000000" step="100000">
+            </div>
+
+            <div class="control-group">
+                <label>测试类型:</label>
+                <select id="testType">
+                    <option value="simple">简单遍历（读取）</option>
+                    <option value="calculate">计算操作（求和）</option>
+                    <option value="transform">转换操作（映射）</option>
+                    <option value="complex">复杂操作（过滤+转换）</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label>重复次数:</label>
+                <input type="number" id="iterations" value="10" min="1" max="100">
+            </div>
+
+            <div class="control-group">
+                <button onclick="runBenchmark()">🚀 开始测试</button>
+                <button onclick="runMultipleTests()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">📊 运行多组对比</button>
+            </div>
+
+            <div class="test-info">
+                <strong>提示：</strong> 数组越大，性能差异越明显。建议从 100 万开始测试，可以看到显著差异。
+            </div>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>正在进行性能测试，请稍候...</p>
+        </div>
+
+        <div id="results" class="results" style="display: none;">
+            <h2>📊 测试结果</h2>
+
+            <div class="comparison-grid">
+                <div id="while-result" class="method-result">
+                    <h3>⚡ while 循环</h3>
+                    <div class="metric-item">
+                        <span class="metric-label">平均时间:</span>
+                        <span class="metric-value" id="while-time">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">最快:</span>
+                        <span class="metric-value" id="while-min">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">最慢:</span>
+                        <span class="metric-value" id="while-max">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">操作/秒:</span>
+                        <span class="metric-value" id="while-ops">-</span>
+                    </div>
+                </div>
+
+                <div id="foreach-result" class="method-result">
+                    <h3>🔁 forEach</h3>
+                    <div class="metric-item">
+                        <span class="metric-label">平均时间:</span>
+                        <span class="metric-value" id="foreach-time">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">最快:</span>
+                        <span class="metric-value" id="foreach-min">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">最慢:</span>
+                        <span class="metric-value" id="foreach-max">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">操作/秒:</span>
+                        <span class="metric-value" id="foreach-ops">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary" id="summary">
+                <!-- 动态填充 -->
+            </div>
+        </div>
+
+        <div id="chart" class="chart-container" style="display: none;">
+            <h2>性能对比图表</h2>
+            <div class="bar-chart">
+                <div class="bar-row">
+                    <div class="bar-label">while</div>
+                    <div class="bar-container">
+                        <div class="bar-fill" id="while-bar" style="width: 0%;">
+                            <span id="while-bar-text"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">forEach</div>
+                    <div class="bar-container">
+                        <div class="bar-fill" id="foreach-bar" style="width: 0%;">
+                            <span id="foreach-bar-text"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-comparison">
+            <h2>代码对比</h2>
+            <div class="code-grid">
+                <div class="code-block">
+                    <h3>⚡ while 循环</h3>
+                    <pre><span class="comment">// 传统 while 循环</span>
+<span class="keyword">let</span> i = <span class="number">0</span>;
+<span class="keyword">while</span> (i < arr.<span class="function">length</span>) {
+    <span class="comment">// 处理 arr[i]</span>
+    sum += arr[i];
+    i++;
+}
+
+<span class="comment">// 特点：</span>
+<span class="comment">// ✓ 最快的循环方式</span>
+<span class="comment">// ✓ 无函数调用开销</span>
+<span class="comment">// ✓ 可随时 break</span>
+<span class="comment">// ✗ 代码较啰嗦</span></pre>
+                </div>
+
+                <div class="code-block">
+                    <h3>🔁 forEach</h3>
+                    <pre><span class="comment">// 高级迭代方法</span>
+arr.<span class="function">forEach</span>(<span class="keyword">function</span>(item) {
+    <span class="comment">// 处理 item</span>
+    sum += item;
+});
+
+<span class="comment">// 或使用箭头函数</span>
+arr.<span class="function">forEach</span>(item => sum += item);
+
+<span class="comment">// 特点：</span>
+<span class="comment">// ✓ 代码简洁优雅</span>
+<span class="comment">// ✓ 语义清晰</span>
+<span class="comment">// ✗ 有函数调用开销</span>
+<span class="comment">// ✗ 不能 break</span></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let testResults = [];
+
+        function generateTestArray(size) {
+            const arr = [];
+            for (let i = 0; i < size; i++) {
+                arr.push(Math.random() * 100);
+            }
+            return arr;
+        }
+
+        function testWhileLoop(arr, testType) {
+            const start = performance.now();
+            let result = 0;
+            let i = 0;
+
+            switch(testType) {
+                case 'simple':
+                    while (i < arr.length) {
+                        const val = arr[i];
+                        i++;
+                    }
+                    break;
+                case 'calculate':
+                    while (i < arr.length) {
+                        result += arr[i];
+                        i++;
+                    }
+                    break;
+                case 'transform':
+                    const transformed = [];
+                    while (i < arr.length) {
+                        transformed.push(arr[i] * 2);
+                        i++;
+                    }
+                    break;
+                case 'complex':
+                    const filtered = [];
+                    while (i < arr.length) {
+                        if (arr[i] > 50) {
+                            filtered.push(arr[i] * 2);
+                        }
+                        i++;
+                    }
+                    break;
+            }
+
+            const end = performance.now();
+            return end - start;
+        }
+
+        function testForEach(arr, testType) {
+            const start = performance.now();
+            let result = 0;
+
+            switch(testType) {
+                case 'simple':
+                    arr.forEach(val => {
+                        const x = val;
+                    });
+                    break;
+                case 'calculate':
+                    arr.forEach(val => {
+                        result += val;
+                    });
+                    break;
+                case 'transform':
+                    const transformed = [];
+                    arr.forEach(val => {
+                        transformed.push(val * 2);
+                    });
+                    break;
+                case 'complex':
+                    const filtered = [];
+                    arr.forEach(val => {
+                        if (val > 50) {
+                            filtered.push(val * 2);
+                        }
+                    });
+                    break;
+            }
+
+            const end = performance.now();
+            return end - start;
+        }
+
+        async function runBenchmark() {
+            const arraySize = parseInt(document.getElementById('arraySize').value);
+            const testType = document.getElementById('testType').value;
+            const iterations = parseInt(document.getElementById('iterations').value);
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('chart').style.display = 'none';
+
+            // 等待 UI 更新
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            const whileTimes = [];
+            const foreachTimes = [];
+
+            for (let i = 0; i < iterations; i++) {
+                const testArray = generateTestArray(arraySize);
+                
+                // 测试 while
+                const whileTime = testWhileLoop(testArray, testType);
+                whileTimes.push(whileTime);
+
+                // 测试 forEach
+                const foreachTime = testForEach(testArray, testType);
+                foreachTimes.push(foreachTime);
+
+                // 避免阻塞 UI
+                if (i % 3 === 0) {
+                    await new Promise(resolve => setTimeout(resolve, 0));
+                }
+            }
+
+            displayResults(whileTimes, foreachTimes, arraySize);
+        }
+
+        function displayResults(whileTimes, foreachTimes, arraySize) {
+            const whileAvg = whileTimes.reduce((a, b) => a + b) / whileTimes.length;
+            const foreachAvg = foreachTimes.reduce((a, b) => a + b) / foreachTimes.length;
+
+            const whileMin = Math.min(...whileTimes);
+            const whileMax = Math.max(...whileTimes);
+            const foreachMin = Math.min(...foreachTimes);
+            const foreachMax = Math.max(...foreachTimes);
+
+            const whileOps = (arraySize / (whileAvg / 1000)).toFixed(0);
+            const foreachOps = (arraySize / (foreachAvg / 1000)).toFixed(0);
+
+            document.getElementById('while-time').textContent = `${whileAvg.toFixed(2)} ms`;
+            document.getElementById('while-min').textContent = `${whileMin.toFixed(2)} ms`;
+            document.getElementById('while-max').textContent = `${whileMax.toFixed(2)} ms`;
+            document.getElementById('while-ops').textContent = `${parseInt(whileOps).toLocaleString()}`;
+
+            document.getElementById('foreach-time').textContent = `${foreachAvg.toFixed(2)} ms`;
+            document.getElementById('foreach-min').textContent = `${foreachMin.toFixed(2)} ms`;
+            document.getElementById('foreach-max').textContent = `${foreachMax.toFixed(2)} ms`;
+            document.getElementById('foreach-ops').textContent = `${parseInt(foreachOps).toLocaleString()}`;
+
+            const diff = ((foreachAvg - whileAvg) / whileAvg * 100).toFixed(2);
+            const speedup = (foreachAvg / whileAvg).toFixed(2);
+
+            // 标记获胜者
+            document.getElementById('while-result').classList.remove('winner');
+            document.getElementById('foreach-result').classList.remove('winner');
+            
+            if (whileAvg < foreachAvg) {
+                document.getElementById('while-result').classList.add('winner');
+            } else {
+                document.getElementById('foreach-result').classList.add('winner');
+            }
+
+            // 更新摘要
+            const summaryHtml = `
+                <h3>🏆 性能分析</h3>
+                <p><strong>while 循环</strong>比 <strong>forEach</strong> 快 <strong>${diff}%</strong></p>
+                <p>forEach 的执行时间是 while 的 <strong>${speedup}x</strong></p>
+                <p>处理 <strong>${arraySize.toLocaleString()}</strong> 个元素，while 节省了 <strong>${(foreachAvg - whileAvg).toFixed(2)} ms</strong></p>
+            `;
+            document.getElementById('summary').innerHTML = summaryHtml;
+
+            // 更新图表
+            const maxTime = Math.max(whileAvg, foreachAvg);
+            const whileWidth = (whileAvg / maxTime * 100).toFixed(2);
+            const foreachWidth = 100;
+
+            document.getElementById('while-bar').style.width = `${whileWidth}%`;
+            document.getElementById('foreach-bar').style.width = `${foreachWidth}%`;
+            document.getElementById('while-bar-text').textContent = `${whileAvg.toFixed(2)} ms`;
+            document.getElementById('foreach-bar-text').textContent = `${foreachAvg.toFixed(2)} ms`;
+
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('chart').style.display = 'block';
+        }
+
+        async function runMultipleTests() {
+            const sizes = [100000, 500000, 1000000, 5000000];
+            const testType = document.getElementById('testType').value;
+            
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            
+            let reportHtml = '<h2>多组测试报告</h2><table style="width:100%; border-collapse: collapse; margin-top: 20px;">';
+            reportHtml += '<tr style="background: #f5576c; color: white;"><th style="padding: 12px;">数组大小</th><th>while (ms)</th><th>forEach (ms)</th><th>性能差异</th></tr>';
+            
+            for (const size of sizes) {
+                const arr = generateTestArray(size);
+                const whileTime = testWhileLoop(arr, testType);
+                const foreachTime = testForEach(arr, testType);
+                const diff = ((foreachTime - whileTime) / whileTime * 100).toFixed(2);
+                
+                reportHtml += `<tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 12px; text-align: center;">${size.toLocaleString()}</td>
+                    <td style="padding: 12px; text-align: center; font-weight: bold; color: #28a745;">${whileTime.toFixed(2)}</td>
+                    <td style="padding: 12px; text-align: center;">${foreachTime.toFixed(2)}</td>
+                    <td style="padding: 12px; text-align: center; color: #f5576c; font-weight: bold;">+${diff}%</td>
+                </tr>`;
+                
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            
+            reportHtml += '</table>';
+            
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('results').innerHTML = reportHtml;
+            document.getElementById('results').style.display = 'block';
+        }
+
+        // 页面加载时运行一次
+        window.addEventListener('load', () => {
+            setTimeout(() => runBenchmark(), 500);
+        });
+    </script>
+</body>
+</html>

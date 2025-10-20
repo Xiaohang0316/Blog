@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Demo</title>
+    <link rel="stylesheet" href="./index.css">
+    <style>
+ 
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .header h1 {
+            font-size: 3.5em;
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: 300;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            display: block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .card:hover .card-icon {
+            animation: spin 0.6s ease;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg) scale(1);
+            }
+            to {
+                transform: rotate(360deg) scale(1.2);
+            }
+        }
+
+        .card h2 {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            font-size: 1.05em;
+        }
+
+        .card-features {
+            list-style: none;
+            margin-bottom: 25px;
+            padding-left: 0;
+        }
+
+        .card-features li {
+            color: #555;
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size: 0.95em;
+        }
+
+        .card-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .footer-note {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            border-radius: 15px;
+            color: white;
+            font-size: 1em;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+        }
+
+        .footer-note strong {
+            color: #ffd700;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5em;
+            }
+
+            .header p {
+                font-size: 1.1em;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 30px;
+            }
+        }
+
+        /* 添加脉冲效果 */
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
+            }
+        }
+
+        .card:hover {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景粒子 -->
+    <div class="particle" style="width: 80px; height: 80px; top: 10%; left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="width: 60px; height: 60px; top: 70%; left: 80%; animation-delay: 2s;"></div>
+    <div class="particle" style="width: 100px; height: 100px; top: 40%; left: 5%; animation-delay: 4s;"></div>
+    <div class="particle" style="width: 70px; height: 70px; top: 20%; left: 85%; animation-delay: 1s;"></div>
+    <div class="particle" style="width: 90px; height: 90px; top: 80%; left: 15%; animation-delay: 3s;"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Blog Demo</h1>
+            <!-- <p>探索 CSS 与 JavaScript 样式方案的性能差异</p> -->
+        </div>
+
+        <!-- <div class="cards-grid">
+            <div class="card">
+                <span class="card-icon">⚡</span>
+                <h2>实时性能对比</h2>
+                <p>直观对比 CSS 与 JS 两种样式方案的渲染速度和性能表现</p>
+                <ul class="card-features">
+                    <li>并排双表格实时对比</li>
+                    <li>可调节数据行数测试</li>
+                    <li>实时性能指标显示</li>
+                    <li>支持 100-10000 行数据</li>
+                </ul>
+                <button class="btn" onclick="window.location.href='./table/table_performance_demo.html'">
+                    开始测试 →
+                </button>
+            </div>
+
+            <div class="card">
+                <span class="card-icon">🔄</span>
+                <h2>循环优化</h2>
+                <h2>循环性能对比</h2>
+                <p>深入对比 while 与 forEach 在不同场景下的性能差异</p>
+                <ul class="card-features">
+                    <li>多种测试场景切换</li>
+                    <li>支持百万级数据测试</li>
+                    <li>批量多组对比测试</li>
+                    <li>可视化性能图表</li>
+                </ul>
+                <button class="btn" onclick="window.location.href='#blog-article'">
+                    阅读博客 →
+                </button>
+            </div>
+        </div> -->
+        <div class="cards-grid" id="cardsContainer">
+            <!-- 卡片将通过 JavaScript 动态生成 -->
+        </div>
+
+        <div class="footer">
+            <div class="footer-note">
+                <!-- 💡 <strong>提示：</strong> 测试结果显示，CSS 样式方案比 JS 内联样式快 <strong>150-300%</strong>，内存占用减少 <strong>60-80%</strong> -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 添加页面加载动画
+        document.addEventListener('DOMContentLoaded', () => {
+            // 添加更多背景粒子
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach((particle, index) => {
+                particle.style.animationDelay = `${index * 0.5}s`;
+            });
+        });
+
+        // 导航函数
+        function navigateToDemo() {
+            alert('即将跳转到性能对比演示页面！\n\n在实际使用中，请将此处改为真实的页面 URL。\n例如：window.location.href = "demo.html"');
+            // 实际使用时替换为：
+            // window.location.href = 'performance-demo.html';
+        }
+
+        function navigateToBlog() {
+            alert('即将跳转到技术博客页面！\n\n在实际使用中，请将此处改为真实的页面 URL。\n例如：window.location.href = "blog.html"');
+            // 实际使用时替换为：
+            // window.location.href = 'blog.html';
+        }
+
+        function showCodeExample() {
+            alert('源码示例功能！\n\n你可以：\n• 在 GitHub 上查看完整代码\n• 下载源码到本地学习\n• 复制关键代码片段\n\n在实际项目中，这里可以链接到你的代码仓库。');
+            // 实际使用时可以：
+            // window.open('https://github.com/your-repo', '_blank');
+        }
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 鼠标跟随效果
+        document.addEventListener('mousemove', (e) => {
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach((particle, index) => {
+                const speed = (index + 1) * 0.01;
+                const x = (e.clientX * speed);
+                const y = (e.clientY * speed);
+                particle.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
