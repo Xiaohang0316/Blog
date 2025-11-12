@@ -98,7 +98,7 @@ const response = await fetch('https://copilot-proxy/api/v1/completions', {
 学习到 token 序列的分布模式 与 语义模式。
 
 2. 推理过程（Inference Pipeline）
-3. 编码输入 Prompt
+ 2.1. 编码输入 Prompt
 Prompt 例如：
 ```js
 # Language: js
@@ -108,9 +108,9 @@ function fetchData(url) {
 }
 ```
 被编码为 tokens。
-4. 预测下一个 token
+  2.2. 预测下一个 token
 模型预测下一个最可能出现的 token，直到生成完整函数体。
-5. 输出结构化结果
+   2.3. 输出结构化结果
 模型返回：
 ```js
 {
@@ -233,3 +233,5 @@ vscode.workspace.onDidChangeTextDocument((event) => {
     })
 
 ```
+
+![alt text](image.png)
