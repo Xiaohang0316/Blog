@@ -147,7 +147,7 @@ export function activate(context: vscode.ExtensionContext) {
       try {
         const edit = new vscode.WorkspaceEdit();
         const nextLinePos = position.translate(1, 0);
-        edit.insert(document.uri, nextLinePos, suggestion + '\n');
+        edit.insert(document.uri, nextLinePos, '\n' + suggestion + '\n');
         await vscode.workspace.applyEdit(edit);
       } finally {
         isApplyingEdit = false;
