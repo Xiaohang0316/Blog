@@ -1,0 +1,22 @@
+{
+  "name": "angular-controlflow-lsp",
+  "displayName": "Angular ControlFlow LSP",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "main": "./out/extension.js",
+  "activationEvents": ["*"],
+  "scripts": {
+    "compile": "tsc -b"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/vscode": "^1.85.0"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.0",
+    "vscode-languageserver": "^9.0.0",
+    "vscode-languageserver-textdocument": "^1.0.7"
+  }
+}
