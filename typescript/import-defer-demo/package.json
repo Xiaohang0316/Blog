@@ -1,0 +1,35 @@
+{
+  "name": "import-defer-demo",
+  "version": "1.0.0",
+  "description": "TypeScript 5.9 import defer 特性演示",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "transform": "node transform-defer.js",
+    "demo1": "node dist/demo1-without-defer.js",
+    "demo2": "node dist/demo2-with-defer.js",
+    "demo2:transformed": "npm run build && npm run transform && node dist/demo2-with-defer.transformed.js",
+    "demo3": "node dist/demo3-conditional-loading.js",
+    "demo3:transformed": "npm run build && npm run transform && node dist/demo3-conditional-loading.transformed.js",
+    "demo4": "node dist/demo4-dynamic-import-alternative.js",
+    "build:webpack": "npm run build && webpack --config webpack.config.js",
+    "demo2:webpack": "npm run build:webpack && node dist-webpack/demo2.bundle.js",
+    "demo3:webpack": "npm run build:webpack && node dist-webpack/demo3.bundle.js",
+    "build:vite": "vite build --config vite-simple.config.js",
+    "demo2:vite": "npm run build:vite && node dist-vite/demo2.js",
+    "demo3:vite": "npm run build:vite && node dist-vite/demo3.js"
+  },
+  "keywords": [
+    "typescript",
+    "import-defer",
+    "performance"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "webpack": "^5.90.0",
+    "webpack-cli": "^5.1.4",
+    "vite": "^5.0.0"
+  }
+}
