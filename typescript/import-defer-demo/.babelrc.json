@@ -1,0 +1,13 @@
+{
+  "presets": [
+    "@babel/preset-typescript"
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-proposal-import-defer",
+      {
+        "// Note": "Babel's transform only works for CommonJS output"
+      }
+    ]
+  ]
+}

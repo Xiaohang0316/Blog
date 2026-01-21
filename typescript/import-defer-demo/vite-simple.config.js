@@ -1,43 +1,28 @@
 import { defineConfig } from 'vite';
+import babel from '@rollup/plugin-babel';
 
 /**
- * 简化版 Vite 插件：将 import defer 转换为动态 import
+ * 使用 Babel 7.23+ 支持 import defer
+ * 通过 @babel/plugin-proposal-import-defer 插件
+ * 参考：https://babeljs.io/docs/babel-plugin-proposal-import-defer
  */
-function simpleDeferPlugin() {
-  return {
-    name: 'simple-defer-transform',
-    enforce: 'pre',
-    
-    transform(code, id) {
-      if (!code.includes('import defer')) {
-        return null;
-      }
-      
-      console.log(`🔄 Transforming defer imports in: ${id}`);
-      
-      // 简单替换：import defer * as X from 'Y' -> const X = await import('Y')
-      // 注意：这个简化版本要求在 async 上下文中使用
-      let transformed = code.replace(
-        /import\s+defer\s+\*\s+as\s+(\w+)\s+from\s+(['"][^'"]+['"]);\s*/g,
-        (match, name, path) => {
-          console.log(`  ✓ Found defer import: ${name} from ${path}`);
-          return `// Original: ${match}\nconst ${name} = await import(${path});\n`;
-        }
-      );
-      
-      // 如果有转换，需要确保函数是 async 的
-      if (transformed !== code) {
-        // 包装在 async IIFE 中
-        transformed = `(async () => {\n${transformed}\n})();`;
-      }
-      
-      return transformed !== code ? { code: transformed, map: null } : null;
-    }
-  };
-}
-
 export default defineConfig({
-  plugins: [simpleDeferPlugin()],
+  plugins: [
+    babel({
+      extensions: ['.ts', '.js'],
+      babelHelpers: 'bundled',
+      presets: [
+        '@babel/preset-typescript'
+      ],
+      plugins: [
+        // Babel 7.23+ 的 import defer 插件
+        ['@babel/plugin-proposal-import-defer', {
+          // 注意：Babel 转换仅支持 CommonJS 输出
+          // 对于 ES modules，建议使用自定义转换
+        }]
+      ]
+    })
+  ],
   
   build: {
     outDir: 'dist-vite',
@@ -45,12 +30,19 @@ export default defineConfig({
     minify: false,
     rollupOptions: {
       input: {
+        demo1: './demo1-without-defer.ts',
         demo2: './demo2-with-defer.ts',
-        demo3: './demo3-conditional-loading.ts'
+        demo3: './demo3-conditional-loading.ts',
+        demo4: './demo4-dynamic-import-alternative.ts'
       },
       output: {
         entryFileNames: '[name].js',
+        format: 'es'
       }
     }
+  },
+  
+  resolve: {
+    extensions: ['.ts', '.js']
   }
 });

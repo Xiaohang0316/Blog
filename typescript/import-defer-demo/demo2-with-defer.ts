@@ -5,7 +5,6 @@ console.log("1️⃣  准备导入模块...");
 
 // 使用 import defer - 模块不会立即执行
 import defer * as heavy from "./heavy-module.js";
-
 console.log("2️⃣  模块已导入（但模块代码还没执行！）");
 
 // 模拟应用的其他初始化工作
@@ -21,7 +20,6 @@ setTimeout(() => {
 }, 2000);
 
 console.log("5️⃣  应用启动完成\n");
-
 /**
  * 输出结果分析：
  * - 模块在应用启动时不会加载和执行

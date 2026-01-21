@@ -1,6 +1,14 @@
 # 使用打包工具处理 `import defer`
 
-由于 `import defer` 是 Stage 2 提案，目前没有运行时原生支持。这里提供了两个打包工具的解决方案。
+## 🎉 好消息！主流工具已支持
+
+根据 [TC39 实现追踪](https://github.com/tc39/proposal-defer-import-eval/issues/73)：
+
+- ✅ **Babel 7.23+** - `@babel/plugin-proposal-import-defer`
+- ✅ **Webpack 5.100+** - `experiments.deferImport: true`
+- ✅ **Rspack 1.6.0+** - 实验性支持
+- ✅ **esbuild 0.25.7+** - 仅语法解析
+- ✅ **TypeScript 5.9+** - 仅语法支持
 
 ## 安装依赖
 
@@ -9,53 +17,46 @@ npm install
 ```
 
 这会安装：
-- `webpack` 和 `webpack-cli` - 用于 Webpack 打包
-- `vite` - 用于 Vite 打包
+- `webpack 5.100+` - 原生支持 import defer
+- `babel-loader` 和 `@babel/plugin-proposal-import-defer` - Babel 转换
+- `vite` 和 `@rollup/plugin-babel` - Vite + Babel 支持
 
-## 方案 1: 使用 Vite（推荐）
+## 方案 1: 使用 Webpack 5.100+（原生支持，推荐）
 
-Vite 构建更快，配置更简单。
+Webpack 5.100+ 版本开始原生支持 `import defer`！
 
 ### 配置说明
 
-查看 [vite-simple.config.js](vite-simple.config.js)：
+查看 [webpack.config.js](webpack.config.js)：
 
 ```javascript
-function simpleDeferPlugin() {
-  return {
-    name: 'simple-defer-transform',
-    transform(code, id) {
-      // 将 import defer * as X from 'Y'
-      // 转换为 const X = await import('Y')
-      return transformedCode;
-    }
-  };
-}
+export default {
+  experiments: {
+    // ✅ 启用原生 import defer 支持
+    deferImport: true
+  }
+};
 ```
 
 ### 运行 Demo
 
 ```bash
-# 使用 Vite 构建并运行 demo2
+# 使用 Webpack 原生支持构建并运行
+npm run demo2:webpack
+npm run demo3:webpack
+```
++ Babel 构建并运行
 npm run demo2:vite
-
-# 使用 Vite 构建并运行 demo3
 npm run demo3:vite
 ```
 
 ### 工作原理
 
-1. Vite 插件在构建时转换 `import defer` 语法
-2. 转换为标准的动态 `import()` 
+1. Babel 在构建时转换 `import defer` 语法
+2. 转换为动态加载模式（CommonJS 风格）
 3. 输出到 `dist-vite/` 目录
-4. 使用 Node.js 运行转换后的代码
 
-## 方案 2: 使用 Webpack
-
-Webpack 通过自定义插件处理。
-
-### 配置说明
-
+⚠️ **注意**：Babel 的转换目前仅支持 CommonJS 输出格式
 查看 [webpack.config.js](webpack.config.js)：
 
 ```javascript
@@ -107,36 +108,42 @@ npm run demo3:transformed
 
 ## 转换策略对比
 
-### 1. Vite 简单转换
+### 1. Webpack 原生转换（最佳）
+```javascript
+// Webpack 5.100+ 原生理解 import defer
+// 无需转换，直接按规范实现延迟加载
+import defer * as heavy from "./heavy-module.js";
+console.log(heavy.config); // 此时才执行模块
+```
+
+**优点**: 
+- ✅ 完全符合 TC39 规范
+- ✅ 原生支持，无需额外转换
+- ✅ 性能最优
+
+**缺点**: 
+- ⚠️ 需要 Webpack 5.100+
+
+### 2. Babel 转换
 ```javascript
 // 输入
 import defer * as heavy from "./heavy-module.js";
-console.log(heavy.config);
 
-// 输出
-const heavy = await import("./heavy-module.js");
-console.log(heavy.config);
+// Babel 输出（CommonJS）
+const heavy = /* Babel 特殊处理 */;
 ```
 
-**优点**: 简单、直接  
-**缺点**: 需要 async 上下文
+**优点**: 
+- ✅ 成熟稳定
+- ✅ 广泛支持
 
-### 2. Webpack 代理转换
+**缺点**: 
+- ⚠️ 仅支持 CommonJS 输出
+- ⚠️ 不支持 ES modules
+
+### 3. 自定义转换
 ```javascript
-// 使用 Proxy 延迟加载
-const heavy = new Proxy({}, {
-  get(target, prop) {
-    // 首次访问时才加载
-  }
-});
-```
-
-**优点**: 更接近 `import defer` 语义  
-**缺点**: 实现复杂
-
-### 3. 自定义脚本转换
-```javascript
-// 创建 loader 函数
+// 手动转换为动态导入
 async function _load_heavy() {
   if (!_heavy_cached) {
     _heavy_cached = await import('./heavy-module.js');
@@ -145,15 +152,20 @@ async function _load_heavy() {
 }
 ```
 
-**优点**: 灵活、可控  
-**缺点**: 需要手动处理所有访问
-
-## 最佳实践建议
-
-### 用于生产环境
-❌ **不推荐** - `import defer` 仍是提案阶段，生产环境应使用动态 `import()`
+✅ **可以使用** - 通过 Webpack 5.100+ 打包后部署
+- 使用 `experiments.deferImport: true`
+- 打包后的代码可在任何环境运行
+- 获得性能优化的好处
 
 ### 用于学习/演示
+✅ **推荐 Webpack 原生支持** - 符合规范、性能最佳
+
+### 用于博客文章
+✅ **完整展示方案**：
+1. 展示 `import defer` 语法（Demo 2/3）
+2. 说明 Webpack/Babel 支持情况
+3. 对比动态 `import()` 替代方案（Demo 4）
+4. 提供可运行的 Webpack 打包示例
 ✅ **推荐 Vite 方案** - 快速、简单、足够准确
 
 ### 用于博客文章
