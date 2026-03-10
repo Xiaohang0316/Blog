@@ -1,4 +1,4 @@
-# TypeScript 学习笔记
+# TypeScript 
 
 ## Import Defer (TypeScript 5.9)
 
@@ -162,3 +162,4 @@ async function useHeavyModule() {
 - [TypeScript 5.9 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-9.html#support-for-import-defer)
 - [ECMAScript Deferred Module Evaluation Proposal (TC39 Stage 2)](https://github.com/tc39/proposal-defer-import-eval/)
 - [Node.js ES Modules](https://nodejs.org/api/esm.html)
+- [Webpack](https://webpack.js.org/configuration/experiments/#experimentsdeferimport)
