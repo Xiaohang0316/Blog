@@ -14,7 +14,7 @@
       "type": "fake-debug",
       "request": "launch",
       "name": "Fake Debug Launch",
-      "program": "/c/Users/XiaohangFeng/Desktop/Test/blog/ddd.js"
+      "program": "${workspaceFolder}/ddd.js"
     }
   ]
 }

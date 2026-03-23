@@ -28,8 +28,6 @@
       {
         "type": "fake-debug",
         "label": "fake-debug",
-        "program": "./out/adapter/debugAdapter.js",
-        "runtime": "node",
         "languages": ["javascript"]
       }
     ]
