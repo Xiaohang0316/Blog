@@ -5,7 +5,7 @@
       "type": "fake-debug",
       "request": "launch",
       "name": "Test Fake Debug",
-      "program": "${workspaceFolder}/test.js",
+      "program": "${workspaceFolder}\\demo\\test.js",
       "trace": true
     }
   ]

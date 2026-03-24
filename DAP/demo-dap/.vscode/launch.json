@@ -14,7 +14,7 @@
       "type": "fake-debug",
       "request": "launch",
       "name": "Fake Debug Launch",
-      "program": "${workspaceFolder}/ddd.js"
+      "program": "out/adapter/debugAdapter.js"
     }
   ]
 }
