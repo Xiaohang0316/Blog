@@ -1,0 +1,35 @@
+{
+  "name": "demo-dap",
+  "version": "1.0.0",
+  "main": "./out/extension.js",
+  "displayName": "FXH Debug",
+  "activationEvents": [
+    "onDebug",
+    "onDebugInitialConfigurations",
+    "onDebugResolve:fake-debug"
+  ],
+  "scripts": {
+    "compile": "tsc -b"
+  },
+  "dependencies": {
+    "vscode-debugadapter": "^1.51.0",
+    "vscode-debugprotocol": "^1.51.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "typescript": "^4.0.0",
+    "@types/vscode": "^1.81.0"
+  },
+  "engines": {
+    "vscode": ">=1.50.0"
+  },
+  "contributes": {
+    "debuggers": [
+      {
+        "type": "fake-debug",
+        "label": "fake-debug",
+        "languages": ["javascript"]
+      }
+    ]
+  }
+}

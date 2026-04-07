@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "fake-debug",
+      "request": "launch",
+      "name": "Test Fake Debug",
+      "program": "${workspaceFolder}/test.js",
+      "trace": true
+    }
+  ]
+}
