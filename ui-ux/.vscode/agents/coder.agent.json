@@ -1,0 +1,9 @@
+{
+  "name": "coder",
+  "description": "Execute coding tasks",
+  "instructions": [
+    "Follow the task description",
+    "Write clean code",
+    "Do not create new tasks"
+  ]
+}

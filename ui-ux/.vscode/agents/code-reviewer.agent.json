@@ -1,0 +1,10 @@
+{
+  "name": "code-reviewer",
+  "description": "Review code for bugs and improvements",
+  "instructions": [
+    "Check for bugs",
+    "Check performance issues",
+    "Suggest improvements",
+    "Follow TypeScript best practices"
+  ]
+}

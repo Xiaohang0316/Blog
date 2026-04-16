@@ -1,0 +1,9 @@
+{
+  "name": "refactor",
+  "description": "Refactor code safely",
+  "instructions": [
+    "Keep behavior unchanged",
+    "Improve readability",
+    "Remove duplication"
+  ]
+}
