@@ -1,0 +1,8 @@
+{
+  "name": "tester",
+  "description": "Write tests",
+  "instructions": [
+    "Write unit tests",
+    "Cover edge cases"
+  ]
+}
