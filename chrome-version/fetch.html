@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Request.isReloadNavigation · Final Demo</title>
+<style>
+  :root {
+    --bg: #faf8f3;
+    --ink: #1a1a1a;
+    --muted: #6b6558;
+    --accent: #c73e1d;
+    --soft: #f0ebe0;
+    --line: #d4ccbc;
+    --ok: #2d7d3f;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --serif: "Cormorant Garamond", "Times New Roman", serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--mono);
+    background: var(--bg);
+    color: var(--ink);
+    padding: 40px 24px 80px;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 36px;
+    font-style: italic;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  h1 em { color: var(--accent); font-style: normal; }
+  .sub {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 24px;
+  }
+  .intro {
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.55;
+    max-width: 700px;
+    margin-bottom: 24px;
+  }
+  .intro code {
+    font-family: var(--mono);
+    background: var(--ink);
+    color: var(--bg);
+    padding: 2px 7px;
+    font-size: 12px;
+  }
+
+  .strategy {
+    background: var(--soft);
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    font-size: 12px;
+    line-height: 1.9;
+    border-left: 4px solid var(--accent);
+  }
+  .strategy h4 {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .strategy table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+  .strategy td {
+    padding: 6px 10px 6px 0;
+    border-bottom: 1px dotted var(--line);
+    vertical-align: top;
+  }
+  .strategy td:first-child { color: var(--muted); width: 130px; }
+  .strategy td code {
+    font-family: var(--mono);
+    background: var(--ink);
+    color: var(--bg);
+    padding: 1px 5px;
+    font-size: 11px;
+  }
+
+  .sw-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    background: var(--soft);
+    border: 1px solid var(--line);
+    font-size: 12px;
+    margin-bottom: 24px;
+  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: #c2b8a3; }
+  .dot.active { background: var(--ok); box-shadow: 0 0 0 4px #2d7d3f22; }
+
+  .panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--ink);
+    border: 2px solid var(--ink);
+    margin-bottom: 28px;
+  }
+  @media (max-width: 720px) { .panels { grid-template-columns: 1fr; } }
+  .panel { background: var(--bg); padding: 24px; min-height: 230px; }
+  .panel h3 {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 500;
+    font-style: italic;
+    margin-bottom: 14px;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 0;
+    font-size: 13px;
+    border-bottom: 1px dotted var(--line);
+  }
+  .row:last-child { border-bottom: none; }
+  .row .k { color: var(--muted); }
+  .row .v { font-weight: 600; }
+  .v.yes { color: var(--accent); }
+  .v.no  { color: var(--muted); }
+
+  .data-card {
+    padding: 18px;
+    background: var(--soft);
+    border-left: 4px solid var(--line);
+  }
+  .data-card.cache { border-left-color: var(--accent); }
+  .data-card .label {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .data-card .val {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 500;
+    margin: 2px 0 10px;
+  }
+  .data-card .source {
+    font-size: 11px;
+    padding: 3px 8px;
+    background: var(--bg);
+    display: inline-block;
+    border: 1px solid var(--line);
+    margin-top: 6px;
+  }
+  .data-card.cache .source { color: var(--accent); border-color: var(--accent); font-weight: 600; }
+
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px; }
+  button {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 12px 18px;
+    background: var(--bg);
+    color: var(--ink);
+    border: 1.5px solid var(--ink);
+    cursor: pointer;
+  }
+  button:hover { background: var(--ink); color: var(--bg); }
+  button.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  button.primary:hover { background: var(--ink); border-color: var(--ink); }
+
+  .log {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 20px;
+    max-height: 340px;
+    overflow-y: auto;
+    font-size: 11px;
+    line-height: 1.8;
+  }
+  .log-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #444;
+    margin-bottom: 10px;
+  }
+  .log-header h4 { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 16px; }
+  .log-header span { font-size: 9px; letter-spacing: 0.2em; color: #888; }
+  .log-entry {
+    padding: 3px 0;
+    display: grid;
+    grid-template-columns: 70px 72px 1fr;
+    gap: 10px;
+  }
+  .log-entry .time { color: #888; }
+  .log-entry .src {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    padding: 1px 5px;
+    text-align: center;
+    align-self: start;
+  }
+  .src.page { background: #d4ccbc; color: #1a1a1a; }
+  .src.sw   { background: var(--accent); color: var(--bg); }
+  .src.sys  { background: #888; color: var(--bg); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Request.<em>isReloadNavigation</em></h1>
+  <div class="sub">Final · Reload returns cache · Click returns fresh</div>
+
+  <p class="intro">
+    SW 在 navigation 请求中读取 <code>request.isReloadNavigation</code>,在 API 请求中根据
+    自定义 header <code>X-Trigger</code> 决定策略。页面侧用 <code>PerformanceNavigationTiming</code>
+    判断当前是不是刷新加载,把结果作为 header 带给 SW。
+  </p>
+
+  <div class="strategy">
+    <h4>策略一览</h4>
+    <table>
+      <tr>
+        <td>页面刷新后自动</td>
+        <td><code>X-Trigger: reload</code> → SW 返回 Cache(score 不变)</td>
+      </tr>
+      <tr>
+        <td>手动点 Fetch</td>
+        <td><code>X-Trigger: user-click</code> → SW 走网络生新数据(score 变化)</td>
+      </tr>
+      <tr>
+        <td>首次打开(非刷新)</td>
+        <td><code>X-Trigger: initial-load</code> → SW 走网络生成初始数据</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="sw-status">
+    <span class="dot" id="swDot"></span>
+    <span id="swStatus">等待 SW 激活...</span>
+  </div>
+
+  <div class="panels">
+    <div class="panel">
+      <h3>Navigation Signal</h3>
+      <div class="row">
+        <span class="k">request.mode</span>
+        <span class="v" id="navMode">—</span>
+      </div>
+      <div class="row">
+        <span class="k">isReloadNavigation</span>
+        <span class="v" id="navReload">—</span>
+      </div>
+      <div class="row">
+        <span class="k">isHistoryNavigation</span>
+        <span class="v" id="navHistory">—</span>
+      </div>
+      <div class="row">
+        <span class="k">Page 自检 nav.type</span>
+        <span class="v" id="pageNavType">—</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>/api/user Response</h3>
+      <div class="data-card" id="dataCard">
+        <div class="label">等待请求...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="primary" id="btnFetch">Fetch /api/user</button>
+    <button id="btnReload">刷新 (F5)</button>
+    <button id="btnClear">清除 Cache</button>
+    <button id="btnUnreg">注销 SW + 清全部</button>
+  </div>
+
+  <div class="log">
+    <div class="log-header">
+      <h4>Event Log</h4>
+      <span id="logCount">0 entries</span>
+    </div>
+    <div id="logBody"></div>
+  </div>
+</div>
+
+<script>
+  // ───── 页面侧也自检一下 navigation 类型,展示在面板 ─────
+  function getPageNavType() {
+    const nav = performance.getEntriesByType('navigation')[0];
+    return nav ? nav.type : 'unknown';
+  }
+  const pageNavType = getPageNavType(); // 'navigate' | 'reload' | 'back_forward' | 'prerender'
+  document.getElementById('pageNavType').textContent = `"${pageNavType}"`;
+
+  // ───── 日志 ─────
+  const log = [];
+  const logBody = document.getElementById('logBody');
+  const logCount = document.getElementById('logCount');
+  function fmt(d) { return d.toTimeString().slice(0, 8); }
+  function addLog(src, msg) {
+    log.unshift({ time: fmt(new Date()), src, msg });
+    if (log.length > 40) log.pop();
+    logCount.textContent = log.length + ' entries';
+    logBody.innerHTML = log.map(e => `
+      <div class="log-entry">
+        <span class="time">${e.time}</span>
+        <span class="src ${e.src}">${e.src}</span>
+        <span>${e.msg}</span>
+      </div>`).join('');
+  }
+
+  function renderData(data, source) {
+    const card = document.getElementById('dataCard');
+    const fromCache = source === 'cache';
+    card.className = 'data-card' + (fromCache ? ' cache' : '');
+    card.innerHTML = `
+      <div class="label">user</div>
+      <div class="val">${data.user}</div>
+      <div class="label">score</div>
+      <div class="val">${data.score.toLocaleString()}</div>
+      <div class="label">fetched</div>
+      <div style="font-size:12px">${new Date(data.fetchedAt).toLocaleString()}</div>
+      <div class="source">${fromCache ? '⚡ from Cache' : '↗ from network'}</div>`;
+  }
+
+  // ───── 核心:带 X-Trigger 的请求 ─────
+  async function fetchUser(trigger) {
+    addLog('page', `fetch(/api/user) · X-Trigger=${trigger}`);
+    try {
+      const res = await fetch('/api/user', {
+        headers: { 'X-Trigger': trigger }
+      });
+      const src = res.headers.get('X-Served-By') || 'unknown';
+      const data = await res.json();
+      addLog('page', `响应 score=${data.score} · X-Served-By=${src}`);
+      renderData(data, src);
+    } catch (err) {
+      addLog('sys', '请求失败: ' + err.message);
+    }
+  }
+
+  // ───── 接收 SW 消息 ─────
+  navigator.serviceWorker?.addEventListener('message', (e) => {
+    const { type, payload } = e.data || {};
+    if (type === 'nav-info') {
+      document.getElementById('navMode').textContent = `"${payload.mode}"`;
+      const r = document.getElementById('navReload');
+      r.textContent = String(payload.isReloadNavigation);
+      r.className = 'v ' + (payload.isReloadNavigation ? 'yes' : 'no');
+      const h = document.getElementById('navHistory');
+      h.textContent = String(payload.isHistoryNavigation);
+      h.className = 'v ' + (payload.isHistoryNavigation ? 'yes' : 'no');
+      addLog('sw', `navigation · isReloadNavigation=${payload.isReloadNavigation}`);
+    } else if (type === 'api-info') {
+      addLog('sw', payload.msg);
+    }
+  });
+
+  async function registerSW() {
+    if (!('serviceWorker' in navigator)) {
+      document.getElementById('swStatus').textContent = '不支持 SW';
+      return;
+    }
+    try {
+      await navigator.serviceWorker.register('./sw.js');
+      addLog('sys', 'SW 已注册');
+      await navigator.serviceWorker.ready;
+
+      if (navigator.serviceWorker.controller) {
+        document.getElementById('swDot').classList.add('active');
+        document.getElementById('swStatus').textContent = 'SW 已接管本页';
+
+        // 页面 load 后自动拉数据,根据 navigation 类型决定 trigger
+        const trigger = pageNavType === 'reload' ? 'reload' : 'initial-load';
+        fetchUser(trigger);
+      } else {
+        document.getElementById('swStatus').textContent =
+          'SW 已装但未接管,请按 F5 再试';
+        addLog('sys', '首次安装 · 请 F5');
+      }
+    } catch (err) {
+      addLog('sys', '注册失败: ' + err.message);
+    }
+  }
+
+  document.getElementById('btnFetch').addEventListener('click', () => fetchUser('user-click'));
+  document.getElementById('btnReload').addEventListener('click', () => location.reload());
+  document.getElementById('btnClear').addEventListener('click', async () => {
+    const names = await caches.keys();
+    await Promise.all(names.map(n => caches.delete(n)));
+    addLog('sys', `已清 ${names.length} 个 cache`);
+  });
+  document.getElementById('btnUnreg').addEventListener('click', async () => {
+    const regs = await navigator.serviceWorker.getRegistrations();
+    await Promise.all(regs.map(r => r.unregister()));
+    const names = await caches.keys();
+    await Promise.all(names.map(n => caches.delete(n)));
+    addLog('sys', '已注销 SW 并清除全部 Cache · 请刷新');
+  });
+
+  registerSW();
+</script>
+</body>
+</html>
