@@ -1,0 +1,468 @@
+
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\EntityCacheSet.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\EnvironmentVariable.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\EpisodeGrouping.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Ideon.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\ImportTarget.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\InsightAction.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\InsightOptimizer.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\InsightOptimizerCheckpoint.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\InsightOptimizerConfig.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\InsightRecommendation.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\InsightSession.applyAndRerun.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\InsightSession.exportBundle.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\InsightSession.importBundle.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\InsightSession.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\InsightSession.nbaRun.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\InsightSession.qaRun.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\InsightSuite.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\InsightTemplate.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\IntegrityCheck.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\IssueReporting.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\LaunchPad.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\LocationCache.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\MarketShareExtract.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Menu.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\MetaDataSync.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\MetaDataSyncLog.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\MetaDataToken.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\MetaDataUsage.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Metric.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\MetricTarget2.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\ModelHistory.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Notes.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPOCompareNetwork.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPOCompareNetworkExport.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPOCompareNetworkGroup.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPOIdeonExport.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPOMarket.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPONetwork.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPONetworkAdequacy.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPONetworkAdequacyNPI.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPONetworkNPI.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPONetworkSettingsProfile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPONetworkViewHistory.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPOStaging.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPOStagingMarket.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPOStagingNetwork.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPOStagingNetworkNPI.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\PatientExtract.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\PatientJourneyAnalysis.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\PatientProfile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\PlaybookAdkarQuestion.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\PlaybookBehavioralTactic.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\PlaybookCoachingTip.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\PlaybookFollowUpRule.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\PlaybookKaActivity.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\PlaybookPracticeType.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\PlaybookQuestionHistory.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\PlaybookReinforcementMilestone.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\PlaybookSession.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\PracticeProfile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\PredictionExplainer.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\ProductConfiguration.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\ProviderNetwork.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\RatesViewHistory.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\ReportDefinition.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\SalesforceOpportunity.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\SalesforceSyncJob.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\SavedAnalysis.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\SavedAnalysisGroup.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\SavedCriteria.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\SavedCriteriaGroup.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\ScheduleReport.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\ScorecardFormula.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\ScorecardTemplate.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\ScorecardTemplateOverride.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\SearchCache.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Spotlight.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\SpotlightGroup.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\SpotlightIntegrityCheck.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\SpotlightPdfTask.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\SqlCache.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\StepWorkflowState.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\SubpracticeLocation.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\UserActivity.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\UserErrorLog.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\UserManagement.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\UserRole.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\UserRuntimeSettings.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\UserSpotlightRuntimeSettings.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\UserVisualizationRuntimeSettings.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\ValidValuesQuery.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Watchlist.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\WatchListGroup.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\advanceHelper.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\advanceHelperEP.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\advanceHelperSR.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\constants.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\mockReportGenerator.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\onboardingCondensed.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\onboardingEP.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\onboardingEPWave2.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\onboardingProviderRosterEP.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\onboardingProviderRosterSR.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\onboardingSR.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\onboardingSRPhysicianList.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\ongoing\advanceMonthlyHelper.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\ongoing\advanceMonthlyHelperEP.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\ongoing\advanceMonthlyHelperSR.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\ongoing\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\ongoing\monthlyEP.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\ongoing\monthlySR.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\ongoing\quarterlyEP.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Advance\ongoing\quarterlySR.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\ClarifyProvider\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\ClarifyProvider\queries.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\CustomData\customFieldUtils.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\CustomData\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\apiTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\barTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\boxplotTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\bubbleTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\chevronTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\columnTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\donutTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\entityLaunchTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\headlineSummaryTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\histogramTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\kpiRowCategoryTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\listTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\mapTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\metadataTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\metricSummaryTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\mockTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\opportunityCarouselTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\opportunityTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\profileHeaderTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\profileTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\sankeyTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\scatterPlotTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\sectionHeaderTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\stackedColumnTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\tileHelper.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\topMetricTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DashboardTiles\trendTile.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DataDriven\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\DataDriven\templateHelper.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\ImportExport\environmentModels.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\ImportExport\exportEnvironment.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\ImportExport\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPO\athenaTableSync.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPO\bulkImport.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPO\ccg.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPO\compareNetworks.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPO\data.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPO\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPO\prepareData.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPO\queries.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPO\queue.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPO\updateNetwork.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\NPO\upgradeNetwork.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\PatientJourney360\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\PatientJourney360\queries.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\doceboAPI.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\menuAccess.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\menus\administration.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\menus\analysis.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\menus\clarifyAdvance.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\menus\clarifyContracts.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\menus\customData.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\menus\growthIQ.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\menus\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\menus\internal.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\menus\meridian.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\menus\performanceIQ.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\menus\ratesIQ.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\menus\requiredNPOAccess.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\menus\requiredSpotlightAccess.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\menus\spotlights.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Prism\menus\teamIQ.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\apiHelper.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\athenaHelper.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\BaseCareGrouping.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\CareGrouping.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\connection.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\decoratedMetrics.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\prism2Query.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\queryEngine.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\sampleGenerator.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\sqlHelper.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\helpers\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\helpers\modifyClarifyProviderYearlyJoin.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\helpers\modifyDemandForecastingOptions.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\helpers\modifyPatientJourneyTimeframes.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\helpers\modifyProviderNetworkJoin.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\helpers\modifyRatesMedicareRate.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\helpers\modifySqlHandler.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\QueryEngine\helpers\replaceMetaDataTokens.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Scorecards\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Scorecards\scorecardColors.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\Scorecards\scorecardEngine.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\utils\addressabilityLookupBuilder.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\utils\engineOutputCompactor.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\utils\entityReconciliation.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\utils\holisticAssessmentBuilder.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\utils\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\utils\keyPhysicianFields.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\utils\nbaBreakdowns.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\utils\obfuscateEntityNames.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\utils\physicianShellBuilder.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\utils\rateNegotiationChatPipeline.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\utils\unifiedNBAAgent.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\utils\unifiedQAAgent.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\views\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\views\MockViewFilter.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\views\SsaToFipsCrosswalk.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\views\ViewActiveClient.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\views\ViewActiveClientCareGrouping.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\views\ViewBenchmarkMetrics.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\views\ViewBenchmarkVarianceToExpected.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\views\ViewCacheCountByTable.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\views\ViewEntityMetrics.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\views\ViewFilter.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\views\ViewProductConfigUnion.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\views\ViewProductEnabledSavedAnalysis.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\views\ViewProductEnabledScorecardTemplate.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\views\ViewProductEnabledSpotlightGroup.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\models\views\ViewVarianceToExpected.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\utils\htmlSanitizer.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\common\utils\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\lib\orm\BaseModel.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\lib\orm\DataSource.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\lib\orm\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\lib\orm\index.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\lib\orm\ModelLoader.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\lib\orm\ORMFactory.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\aws-load-secrets.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\boot-orm.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\bullConfig.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\bullQueueManager.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\createRestRoutes.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\datasources.local.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\initSocketIO.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\redisConfig.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\server.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\UnauthorizedError.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\boot\authentication.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\boot\cache.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\boot\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\boot\kue.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\boot\redlock.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\boot\scheduler.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\middleware\error-logger.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\middleware\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\activationCode.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\advance.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\appVersion.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\argosStatus.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\claraChatHistory.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\claraChatSlack.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\columnUsage.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\contractRefresh.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\current-time.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\customFieldV2Import.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\dataServiceManager.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\exportCompareNetwork.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\exportEnvironment.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\filterPerformance.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\insightSessionImport.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\issueAttachment.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\jsreport.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\marketShareExtracts.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\metaDataUsage.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\metricTarget2Import.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\nbaExport.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\networkDesigner.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\networkStatistics.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\playbookOnePager.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\queryPerformance.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\querySettings.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\lb3app\server\routes\reportData.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportRenderer\config-merger.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportRenderer\helpers-registry.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportRenderer\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportRenderer\index.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportRenderer\pdf-generator.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportRenderer\pdf-merger.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportRenderer\pdf-parser.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportRenderer\renderer-config.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportRenderer\script-runner.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportRenderer\template-compiler.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportRenderer\template-loader.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportRenderer\utils.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\app\constants\globals.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\app\constants\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\index.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\barChart.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\boxPlotChart.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\bubbleChart.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\clusteredBarChart.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\clusteredChart.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\columnChart.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\errorBar.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\gridChart.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\headlines.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\histogramChart.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\mapChart.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\pieChart.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\predictionExplainer.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\programSummary.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\scatterChart.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\scorecardChart.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\scorecardHeatMap.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\stackedBarChart.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\stackedColumn.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\treeMap.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\trendCharts.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\variableColumn.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vchart\waterFall.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vservice\app.contant.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vservice\calculateChartData.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vservice\clairfyColorService.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vservice\date.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vservice\filterAnalysisPanel.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vservice\formatFunction.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vservice\highChartService.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vservice\highChartService.report.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vservice\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vservice\metricSelector.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vservice\scorecardService.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vservice\spotlightBuilder.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vservice\utilService.base.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\main\shared\commonts\vservice\viewEntityMetricModel.model.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\server\lb3app\common\constants.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\server\lb3app\common\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\server\lb3app\common\models\Scorecards\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\build\server\lb3app\common\models\Scorecards\scorecardColors.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\lib\colorDiff.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\lib\errorReportHelper.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\lib\filter.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\lib\index.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\lib\Injector.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\lib\ngDataAccess.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\lib\ngDataHelper.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\lib\ngDataProvider.js.html
+C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\clarify-platform\coverage\lcov-report\server\reportserver\lib\ngPipeHelper.js.html
+1905 File(s) copied
+  ✅ Archived to clarify-platform\coverage\previous_results
+
+▶ Phase 2 — Run Cypress with coverage enabled
+  $ npx cypress run --env coverage=true --reporter mochawesome --reporter-options "overwrite=false,html=false,json=true,reportDir=cypress/reports" --spec "cypress/e2e/local/scorecards/scorecardBenchmarkFilterNotApplying_spec.js"
+npm warn Unknown user config "always-auth" (//npm.pkg.github.com/:always-auth). This will stop working in the next major version of npm.
+
+Warning: The allowCypressEnv configuration option is enabled. This allows any browser code to read values from Cypress.env(). This is insecure and will be removed in a future major version.
+
+1. Replace Cypress.env() calls with cy.env() (for sensitive values) or Cypress.expose() (for public configuration)
+2. Set allowCypressEnv: false in your Cypress configuration to disable Cypress.env()
+
+Learn more: https://on.cypress.io/cypress-env-migration
+
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        15.13.0                                                                        │
+  │ Browser:        Electron 138 (headless)                                                        │
+  │ Node Version:   v24.13.1 (C:\Program Files\nodejs\node.exe)                                    │
+  │ Specs:          1 found (scorecardBenchmarkFilterNotApplying_spec.js)                          │
+  │ Searched:       C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\cypress\e2e\ │
+  │                 local\scorecards\scorecardBenchmarkFilterNotApplying_spec.js                   │
+  │ Experiments:    experimentalMemoryManagement=true                                              │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  scorecardBenchmarkFilterNotApplying_spec.js                                     (1 of 1)
+
+
+  Coverage for PRSM-19058: The row group overlaps with the checkbox.
+    √ 1 go to scorecard templates page. (29341ms)
+    √ 2 add scorecard template
+    √ 3 add category and group in scorecard template
+    √ 4 add and configure metrics in scorecard template. (53387ms)
+    √ 5 add a analysis. (18802ms)
+    √ 6 check heatmap chart values
+    √ last remove the scorecard template
+
+
+  7 passing (2m)
+
+[mochawesome] Report JSON saved to C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\cypress\reports\mochawesome_031.json
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        7                                                                                │
+  │ Passing:      7                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     2 minutes, 6 seconds                                                             │
+  │ Spec Ran:     scorecardBenchmarkFilterNotApplying_spec.js                                      │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✔  scorecardBenchmarkFilterNotApplying      02:06        7        7        -        -        - │
+  │    _spec.js                                                                                    │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✔  All specs passed!                        02:06        7        7        -        -        -  
+
+
+▶ Phase 3 — Generate lcov HTML report (npx nyc report)
+  $ npx nyc --nycrc-path=config/.nycrc report --reporter=lcov --reporter=text-summary
+npm warn Unknown user config "always-auth" (//npm.pkg.github.com/:always-auth). This will stop working in the next major version of npm.
+
+=============================== Coverage summary ===============================
+Statements   : 9.86% ( 3978/40326 )
+Branches     : 0.8% ( 176/21885 )
+Functions    : 3.04% ( 174/5720 )
+Lines        : 10.13% ( 3972/39224 )
+================================================================================
+
+▶ Phase 4 — Compare coverage (annotate HTML with deltas)
+  $ node "C:\Users\XiaohangFeng\Desktop\work\clarify-platform-qa-automation\scripts\compareCoverageReports.js"
+
+▶ Phase 5 — Generate coverage diff report
+  Building drill-down data...
+  Drill-down entries: 298
+✅ Coverage diff report written:
+   HTML: data\localCodeCoverageReport\coverage-diff-2026-05-25-1109.html
+   JSON: data\localCodeCoverageReport\coverage-diff-2026-05-25-1109.json
+
+--- Coverage Delta ---
+┌────────────┬─────────┬──────────┬───────┐
+│ (index)    │ current │ previous │ delta │
+├────────────┼─────────┼──────────┼───────┤
+│ Statements │ 9.86    │ 9.86     │ 0     │
+│ Branches   │ 0.8     │ 0.8      │ 0     │
+│ Functions  │ 3.04    │ 3.04     │ 0     │
+│ Lines      │ 10.13   │ 10.13    │ 0     │
+└────────────┴─────────┴──────────┴───────┘
+
+✅ Coverage report skill complete.
+   HTML report: data\localCodeCoverageReport\coverage-diff-2026-05-25-1109.html
+   JSON diff:   data\localCodeCoverageReport\coverage-diff-2026-05-25-1109.json

@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quarterly Coverage Review Agent — 诞生全过程与架构</title>
+
+  <!-- Mermaid -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- Highlight.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
+
+  <style>
+    /* ─── 变量 ─── */
+    :root {
+      --bg: #f7f8fc;
+      --surface: #ffffff;
+      --surface2: #f0f4ff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --accent-light: #ede9fe;
+      --green: #10b981;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --blue: #3b82f6;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(99,102,241,.10);
+      --shadow-sm: 0 2px 8px rgba(0,0,0,.06);
+      --font-sans: 'PingFang SC','Hiragino Sans GB','Microsoft YaHei',system-ui,sans-serif;
+      --font-mono: 'JetBrains Mono','Fira Code','Cascadia Code',monospace;
+      --toc-w: 260px;
+    }
+    [data-theme="dark"] {
+      --bg: #0f1117;
+      --surface: #1a1d2e;
+      --surface2: #1e2035;
+      --border: #2d3152;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent-light: #1e1b4b;
+    }
+
+    /* ─── 阅读进度条 ─── */
+    #progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px; width: 0;
+      background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+      z-index: 9999; transition: width .1s linear;
+    }
+
+    /* ─── 布局 ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.85;
+      font-size: 16px;
+      transition: background .3s, color .3s;
+    }
+
+    .layout { display: flex; min-height: 100vh; }
+
+    /* ─── 侧边目录 ─── */
+    #toc-sidebar {
+      position: sticky; top: 0; height: 100vh; width: var(--toc-w);
+      flex-shrink: 0; overflow-y: auto; padding: 28px 16px;
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 13.5px;
+      transition: background .3s, border-color .3s;
+    }
+    #toc-sidebar::-webkit-scrollbar { width: 4px; }
+    #toc-sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .toc-logo {
+      font-size: 11px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 20px; padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .toc-list { list-style: none; }
+    .toc-list li { margin: 2px 0; }
+    .toc-list a {
+      display: block; padding: 5px 10px; border-radius: 7px;
+      color: var(--text-muted); text-decoration: none;
+      transition: all .18s; line-height: 1.4;
+    }
+    .toc-list a:hover, .toc-list a.active {
+      background: var(--accent-light); color: var(--accent);
+    }
+    .toc-list .toc-h3 { padding-left: 20px; font-size: 12.5px; }
+    .toc-list .toc-h4 { padding-left: 32px; font-size: 12px; color: var(--text-muted); }
+
+    /* ─── 主内容 ─── */
+    main {
+      flex: 1; max-width: 860px; margin: 0 auto;
+      padding: 56px 48px 120px;
+      min-width: 0;
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      border-radius: var(--radius);
+      padding: 48px 40px;
+      color: #fff;
+      margin-bottom: 48px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:./image/image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='rgba(255,255,255,.15)'/%3E%3C/svg%3E");
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,.2); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 20px; padding: 4px 14px; font-size: 12px;
+      margin-bottom: 16px; position: relative;
+    }
+    .hero h1 {
+      font-size: 2rem; font-weight: 800; line-height: 1.3;
+      margin-bottom: 16px; position: relative;
+    }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: 20px;
+      font-size: 13.5px; opacity: .88; position: relative;
+    }
+    .hero-meta span { display: flex; align-items: center; gap: 6px; }
+
+    /* ─── 标题 ─── */
+    h2 {
+      font-size: 1.55rem; font-weight: 800; margin: 52px 0 20px;
+      color: var(--text);
+      display: flex; align-items: center; gap: 10px;
+    }
+    h2::before {
+      content: ''; display: block; width: 4px; height: 1.4em;
+      background: linear-gradient(180deg, #6366f1, #8b5cf6);
+      border-radius: 4px; flex-shrink: 0;
+    }
+    h3 {
+      font-size: 1.15rem; font-weight: 700; margin: 36px 0 14px;
+      color: var(--text); padding-left: 16px;
+      border-left: 3px solid var(--accent-light);
+    }
+    h4 {
+      font-size: 1rem; font-weight: 600; margin: 24px 0 10px;
+      color: var(--accent);
+    }
+
+    /* ─── 段落 & 链接 ─── */
+    p { margin: 12px 0; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ─── 引用块 ─── */
+    blockquote {
+      margin: 20px 0;
+      padding: 16px 20px;
+      background: var(--surface2);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* ─── 代码 ─── */
+    code {
+      font-family: var(--font-mono);
+      font-size: .875em;
+      background: var(--surface2);
+      padding: 2px 6px;
+      border-radius: 5px;
+      color: var(--blue);
+    }
+    pre {
+      background: #0d1117;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+    }
+    pre code {
+      background: none; padding: 0; color: var(--blue);;
+      font-size: .85rem; line-height: 1.7;
+    }
+    .copy-btn {
+      position: absolute; top: 10px; right: 12px;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+      color: #94a3b8; border-radius: 6px; padding: 3px 10px;
+      font-size: 11px; cursor: pointer; transition: all .2s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,.15); color: #fff; }
+    .copy-btn.copied { color: var(--green); border-color: var(--green); }
+
+    /* ─── 表格 ─── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: var(--radius); border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    thead tr { background: var(--surface2); }
+    th {
+      padding: 12px 16px; text-align: left; font-weight: 700;
+      color: var(--text-muted); font-size: 12px; text-transform: uppercase;
+      letter-spacing: .05em; white-space: nowrap;
+    }
+    td { padding: 11px 16px; border-top: 1px solid var(--border); vertical-align: top; }
+    tbody tr:hover { background: var(--surface2); }
+
+    /* ─── Step 卡片 ─── */
+    .step-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin: 24px 0;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .2s, border-color .2s;
+      position: relative;
+    }
+    .step-card:hover { box-shadow: var(--shadow); border-color: var(--accent); }
+    .step-card .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff; font-size: 12px; font-weight: 800;
+      position: absolute; top: -14px; left: 24px;
+    }
+    .step-card .prompt-box {
+      background: var(--surface2);
+      border-left: 3px solid var(--accent2);
+      padding: 10px 14px; border-radius: 0 8px 8px 0;
+      margin: 12px 0; font-size: 13.5px;
+      color: var(--text-muted); font-style: italic;
+    }
+    .step-card .prompt-box strong { color: var(--accent2); font-style: normal; }
+
+    /* ─── 分隔线 ─── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+    /* ─── Mermaid ─── */
+    .mermaid-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin: 20px 0;
+      overflow-x: auto;
+      text-align: center;
+    }
+
+    /* ─── 阶段时间线 ─── */
+    .phase-timeline {
+      display: flex; gap: 0; margin: 28px 0; overflow-x: auto;
+    }
+    .phase-item {
+      flex: 1; min-width: 110px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-right: none;
+      padding: 14px 12px; text-align: center;
+      position: relative;
+    }
+    .phase-item:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+    .phase-item:last-child { border-radius: 0 var(--radius) var(--radius) 0; border-right: 1px solid var(--border); }
+    .phase-item .phase-num {
+      font-size: 10px; font-weight: 800; letter-spacing: .06em;
+      color: var(--accent); text-transform: uppercase;
+    }
+    .phase-item .phase-name {
+      font-size: 12px; font-weight: 700; margin: 4px 0; color: var(--text);
+    }
+    .phase-item .phase-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+    .phase-item::after {
+      content: '▶';
+      position: absolute; right: -10px; top: 50%; transform: translateY(-50%);
+      color: var(--accent); font-size: 12px; z-index: 1;
+    }
+    .phase-item:last-child::after { display: none; }
+
+    /* ─── 对比卡片 ─── */
+    .compare-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;
+    }
+    .compare-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+    }
+    .compare-card .c-title {
+      font-size: 13px; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: .06em;
+      margin-bottom: 12px; padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-card .c-row {
+      display: flex; justify-content: space-between;
+      font-size: 13px; padding: 5px 0;
+      border-bottom: 1px dashed var(--border);
+    }
+    .compare-card .c-row:last-child { border-bottom: none; }
+    .tag-yes { color: var(--green); font-weight: 700; }
+    .tag-no  { color: var(--red); font-weight: 700; }
+    .tag-warn { color: var(--yellow); font-weight: 700; }
+
+    /* ─── 未来改进卡片 ─── */
+    .future-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0;
+    }
+    .future-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      transition: all .2s;
+    }
+    .future-item:hover { border-color: var(--accent); background: var(--accent-light); }
+    .future-item .f-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; color: var(--text); }
+    .future-item .f-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+    /* ─── 输出产物 ─── */
+    .output-tree {
+      background: #0d1117; color: #c9d1d9;
+      border-radius: var(--radius);
+      padding: 24px; font-family: var(--font-mono);
+      font-size: 13px; line-height: 1.8;
+      margin: 16px 0;
+    }
+    .output-tree .dir { color: #79c0ff; }
+    .output-tree .file-html { color: #56d364; }
+    .output-tree .file-json { color: #ffa657; }
+    .output-tree .file-log  { color: #8b949e; }
+    .output-tree .note { color: #f0883e; }
+
+    /* ─── 导航工具栏 ─── */
+    #toolbar {
+      position: fixed; top: 20px; right: 24px; z-index: 100;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .tool-btn {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--surface); border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text-muted); font-size: 16px;
+      transition: all .2s;
+    }
+    .tool-btn:hover { border-color: var(--accent); color: var(--accent); box-shadow: var(--shadow); }
+
+    /* ─── 图片 ─── */
+    .article-img {
+      max-width: 100%; border-radius: var(--radius);
+      border: 1px solid var(--border);
+      margin: 16px 0;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ─── ul / ol ─── */
+    ul, ol { padding-left: 1.5em; margin: 10px 0; }
+    li { margin: 4px 0; }
+
+    /* ─── 关键点 badge ─── */
+    .key-point {
+      display: inline-block;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff; font-size: 11px; font-weight: 700;
+      padding: 2px 10px; border-radius: 10px; margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    /* ─── 章节锚点偏移 ─── */
+    [id] { scroll-margin-top: 20px; }
+
+    /* ─── 响应式 ─── */
+    @media (max-width: 900px) {
+      #toc-sidebar { display: none; }
+      main { padding: 32px 20px 80px; }
+      .compare-grid, .future-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- 工具栏 -->
+<div id="toolbar">
+  <button class="tool-btn" id="theme-btn" title="切换主题" onclick="toggleTheme()">🌙</button>
+  <button class="tool-btn" id="top-btn" title="回到顶部" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+</div>
+
+<div class="layout">
+
+  <!-- 侧边目录 -->
+  <nav id="toc-sidebar">
+    <div class="toc-logo">📋 文章目录</div>
+    <ul class="toc-list" id="toc-list">
+      <li><a href="#bg" class="toc-h2">1. 背景与动机</a></li>
+      <li><a href="#dev" class="toc-h2">2. 开发历程</a></li>
+      <li><a href="#step1" class="toc-h3">Step 1 — 初代 Agent</a></li>
+      <li><a href="#step2" class="toc-h3">Step 2 — 验证单文件</a></li>
+      <li><a href="#step3" class="toc-h3">Step 3 — HTML 报告</a></li>
+      <li><a href="#step4" class="toc-h3">Step 4 — UI 迭代</a></li>
+      <li><a href="#step5" class="toc-h3">Step 5 — 文件级钻取</a></li>
+      <li><a href="#step6" class="toc-h3">Step 6 — 行级代码 Diff</a></li>
+      <li><a href="#step7" class="toc-h3">Step 7 — 咨询 Claude Code</a></li>
+      <li><a href="#step8" class="toc-h3">Step 8 — 并行化</a></li>
+      <li><a href="#step9" class="toc-h3">Step 9 — 下沉 Skill</a></li>
+      <li><a href="#step10" class="toc-h3">Step 10 — 缓存问题</a></li>
+      <li><a href="#step11" class="toc-h3">Step 11 — 接入 CI</a></li>
+      <li><a href="#step12" class="toc-h3">Step 12 — 整合重构</a></li>
+      <li><a href="#step13" class="toc-h3">Step 13 — Windows 路径</a></li>
+      <li><a href="#step14" class="toc-h3">Step 14 — 环境初始化后自动继续</a></li>
+      <li><a href="#arch" class="toc-h2">3. 整体架构</a></li>
+      <li><a href="#files" class="toc-h2">4. 核心文件职责</a></li>
+      <li><a href="#phases" class="toc-h2">5. 执行流程详解</a></li>
+      <li><a href="#parallel" class="toc-h2">6. 并行模式</a></li>
+      <li><a href="#compare" class="toc-h2">7. 报告对比</a></li>
+      <li><a href="#output" class="toc-h2">8. 输出产物</a></li>
+      <li><a href="#quickstart" class="toc-h2">9. 快速上手</a></li>
+      <li><a href="#future" class="toc-h2">10. 未来改进</a></li>
+    </ul>
+  </nav>
+
+  <!-- 正文 -->
+  <main>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-badge">🤖 Agent Engineering</div>
+      <h1>Quarterly Coverage Review Agent<br/>诞生全过程与架构</h1>
+      <div class="hero-meta">
+        <span>📅 2026-05-26</span>
+        <span>🏷️ clarify-platform-qa-automation</span>
+      </div>
+    </div>
+
+    <!-- ─── 1. 背景 ─── -->
+    <h2 id="bg">背景与动机</h2>
+
+    <h3>1.1 原有痛点</h3>
+    <p>在引入这个 Agent 之前，季度代码覆盖率检查的流程完全是<strong>人工驱动</strong>的：</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>步骤</th><th>原始做法</th><th>问题</th></tr></thead>
+        <tbody>
+          <tr><td>运行测试</td><td>手动执行 <code>npx cypress run</code></td><td>耗时数小时，容易忘开 <code>coverage=true</code> 标志</td></tr>
+          <tr><td>生成报告</td><td>手动执行 <code>npx nyc report</code></td><td>需要知道正确的 <code>--nycrc-path</code> 参数</td></tr>
+          <tr><td>对比上次</td><td>手动翻阅两份 HTML，肉眼比对</td><td>极易出错，看不到精确的数值变化</td></tr>
+          <tr><td>归档快照</td><td>手动复制文件夹</td><td>常被遗忘，导致下次对比失效</td></tr>
+          <tr><td>发布结果</td><td>手写 Slack 消息</td><td>格式不统一，信息丢失</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>1.2 目标</h3>
+    <ul>
+      <li><strong>零人工干预</strong>完成「运行 → 对比 → 出报告」全链路</li>
+      <li>可读性强：用可视化图表替代纯文字百分比</li>
+      <li>可追溯：每次运行留下带时间戳的 HTML + JSON 产物</li>
+      <li>与现有 agent 生态（Environment Setup、Handle Failures 等）无缝协作</li>
+    </ul>
+
+    <hr/>
+
+    <!-- ─── 2. 开发历程 ─── -->
+    <h2 id="dev">开发历程——真实对话记录</h2>
+    <p>整个 agent 完全通过与 GitHub Copilot 对话迭代完成，以下是真实的开发过程。</p>
+
+    <!-- Step 1 -->
+    <div class="step-card" id="step1">
+      <div class="step-num">1</div>
+      <h3 style="border:none;padding:0;margin:0 0 12px">用 <code>/create-agent</code> 一句话创建初代 Agent</h3>
+      <div class="prompt-box">
+        <strong>提示词：</strong><br/>
+        This agent will generate code coverage of clarify-platform project quarterly and compare the result with last one. Generate report to tell the difference. It should contain skills to finish sub-tasks.<br/>
+        Prepare environment. Run automation tests to generate code coverage result. Compare and output differences between different result.
+      </div>
+      <p><strong>Copilot 的反应：</strong>读取了项目结构后，自动创建了三个文件：</p>
+      <img src="./image/image-4.png" alt="初代 Agent 创建" class="article-img" />
+      <ul>
+        <li><code>quarterly_coverage_review.agent.md</code> — 主编排 agent</li>
+        <li><code>SKILL.md</code> — 包含归档、运行 Cypress、生成 lcov、比较、输出报告共 6 个阶段的可复用 Skill</li>
+        <li><code>generate_coverage_diff_report.js</code> — 初版报告生成脚本</li>
+      </ul>
+      <p><span class="key-point">关键点</span><code>/create-agent</code> 命令会自动探索代码库、理解现有脚本，然后生成与项目深度集成的 agent，而不是通用模板。</p>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card" id="step2">
+      <div class="step-num">2</div>
+      <h3 style="border:none;padding:0;margin:0 0 12px">验证：先跑单个 spec 文件</h3>
+      <div class="prompt-box">
+        <strong>提示词：</strong>为了测试这个东西，我只想执行一个文件，应该怎么告诉他
+      </div>
+      <p>Copilot 解释了 <code>--spec</code> 参数的用法，并验证了 agent 能正确处理单文件场景。</p>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card" id="step3">
+      <div class="step-num">3</div>
+      <h3 style="border:none;padding:0;margin:0 0 12px">从 MD 输出改为固定样式 HTML</h3>
+      <div class="prompt-box">
+        <strong>提示词：</strong>我也要一个固定的 html 报告，不要 MD 文档
+      </div>
+      <img src="./image/image-8.png" alt="改为 HTML 报告" class="article-img" />
+      <p>Copilot 参考了 <code>affected_specs</code> skill 的 HTML 实现方式，将 <code>generate_coverage_diff_report.js</code> 完全重写为输出带样式的独立 HTML 文件。这是<strong>报告视觉化的起点</strong>。</p>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card" id="step4">
+      <div class="step-num">4</div>
+      <h3 style="border:none;padding:0;margin:0 0 12px">迭代 UI：添加文件详情、排序、Delta 列</h3>
+      <div class="prompt-box">
+        <strong>提示词系列：</strong><br/>
+        在下面增加详情，File Statements Δ Status<br/>
+        Statements 应该是上一次到这一次的变化 比如 1% -&gt; 10%，再加一列 差集 Δ是一个排序功能
+      </div>
+      <img src="./image/image-9.png" alt="添加文件详情列" class="article-img" />
+      <p>每一轮对话，Copilot 都会读取当前的 reporter 文件、定位需要修改的函数，然后精准地追加新功能（<code>+78 -4</code> 行修改），并重新运行脚本验证效果。</p>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step-card" id="step5">
+      <div class="step-num">5</div>
+      <h3 style="border:none;padding:0;margin:0 0 12px">文件级钻取：点击行展开目录树</h3>
+      <div class="prompt-box">
+        <strong>提示词：</strong>给行添加点击事件让数据详细到每一个文件<br/>
+        将他们的数据也按照这个格式映射下去，不是直接进去到那个页面，再 File Details 下增加一个面包屑导航栏，可以点击返回的那种
+      </div>
+      <img src="./image/image-11.png" alt="文件钻取" class="article-img" />
+      <img src="./image/image-12.png" alt="面包屑导航" class="article-img" />
+      <p>Copilot 实现了一个完整的 BFS 目录树遍历（<code>buildDrillDownData</code>），将所有子目录和文件的覆盖率数据预先嵌入 HTML 的 <code>&lt;script&gt;</code> 块中，点击时通过 JS 动态渲染——<strong>无需服务器，纯静态 HTML 就能钻取</strong>。</p>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="step-card" id="step6">
+      <div class="step-num">6</div>
+      <h3 style="border:none;padding:0;margin:0 0 12px">行级代码 Diff：展示两次覆盖率发生变化的代码</h3>
+      <div class="prompt-box">
+        <strong>提示词：</strong>点到最后一层的时候把差异代码展示出来<br/>
+        下面再添加一个代码块，如果上一次和本次覆盖率不一样，展示那些代码有差异
+      </div>
+      <img src="./image/image-16.png" alt="行级代码差异" class="article-img" />
+      <p>这是<strong>整个报告最有价值的功能</strong>：通过解析 nyc 生成的叶子页面中的 <code>&lt;span class="cline-yes/no"&gt;</code> 标记，对比两次运行的行级覆盖状态，高亮出「上次已覆盖、本次未覆盖」或反之的代码行。</p>
+    </div>
+
+    <!-- Step 7 -->
+    <div class="step-card" id="step7">
+      <div class="step-num">7</div>
+      <h3 style="border:none;padding:0;margin:0 0 12px">向 Claude Code 请教：哪些覆盖率数据最重要？</h3>
+      <div class="prompt-box">
+        <strong>提示词：</strong>对比两次 code coverage 数据，有那些比较重要的数据需要展示出来
+      </div>
+      <img src="./image/image-18.png" alt="问 Claude Code" class="article-img" />
+      <p>Claude Code 给出了三个维度的建议：</p>
+      <ul>
+        <li><strong>核心指标变化</strong>：行/分支/函数/语句的绝对值和变化量</li>
+        <li><strong>风险信号</strong>：哪些文件覆盖率下降了，新增代码的覆盖率是否达标</li>
+        <li><strong>趋势判断</strong>：整体是变好还是变差，哪些模块是重灾区</li>
+      </ul>
+      <p>基于这些建议，在报告中加入了涨跌颜色区分、Summary 行、以及各维度变化趋势柱形图：</p>
+      <img src="./image/image-17.png" alt="添加趋势图" class="article-img" />
+      <p>Copilot 在一次对话中完成了：读取 8 个文件 → 更新 <code>reporter-core.js</code>（+22 -0）→ 添加 Summary 统计计算（+18 -5）→ 生成 SVG 柱状图（+84 -1）→ 添加 CSS 样式（+15 -1）→ 更新布局注入（+25 -1）。</p>
+    </div>
+
+    <!-- Step 8 -->
+    <div class="step-card" id="step8">
+      <div class="step-num">8</div>
+      <h3 style="border:none;padding:0;margin:0 0 12px">并行化：全量 spec 支持多 worker 并发</h3>
+      <div class="prompt-box">
+        <strong>提示词：</strong>修改当前 Agent 如果全量跑或者超过两个 spec 需要有一个并行跑，然后再合并数据的，添加一个并行数的参数，支持并行
+      </div>
+      <img src="./image/image-25.png" alt="并行化实现" class="article-img" />
+      <p>Copilot 在 <code>quarterly_coverage_review.agent.md</code> 中新增了 <code>--parallel &lt;N&gt;</code> 参数（+138 -17），并创建了 <code>run_parallel_workers.sh</code>，设计了完整的并行架构：</p>
+      <ul>
+        <li>Phase 2 拆分为 2a（决策串/并）、2b（串行路径）、2c（并行路径）</li>
+        <li>每个 worker 写入独立的 <code>.nyc_output_worker_&lt;i&gt;</code> 避免文件冲突</li>
+        <li>等所有 PID 结束后合并，再统一跑 <code>nyc report</code></li>
+      </ul>
+    </div>
+
+    <!-- Step 9 -->
+    <div class="step-card" id="step9">
+      <div class="step-num">9</div>
+      <h3 style="border:none;padding:0;margin:0 0 12px">优化：将逻辑下沉到 Skill，避免 Agent 现场生成代码</h3>
+      <div class="prompt-box">
+        <strong>提示词：</strong>我看到这个 agent 在执行过程中还是会自动生成代码，是否可以将这些代码封装在 coverage-report Skill 中直接调用，加快 Agent 执行速度
+      </div>
+      <img src="./image/image-22.png" alt="封装到 Skill" class="article-img" />
+      <p>Copilot 将计时文件写入逻辑从 agent 的「现场生成 bash 命令」改为直接调用 <code>index.js</code>，并更新了 SKILL.md 和 agent.md 的引用。这样 agent 不再需要在运行时拼接 shell 命令，<strong>执行更快、更可靠</strong>。</p>
+    </div>
+
+    <!-- Step 10 -->
+    <div class="step-card" id="step10">
+      <div class="step-num">10</div>
+      <h3 style="border:none;padding:0;margin:0 0 12px">踩坑：modeInstructions 缓存了旧的 workflow</h3>
+      <div class="prompt-box">
+        <strong>提示词：</strong>为什么没有直接调用 run_parallel_workers 而是自己在生成方法
+      </div>
+      <img src="./image/image-26.png" alt="缓存问题" class="article-img" />
+      <p>Copilot 自己发现并承认了问题：<code>modeInstructions</code>（系统提示中内嵌的旧版 workflow）描述的是手动拼接并行逻辑，而 agent 文件 §2c 已更新为直接调用脚本。<strong>旧缓存覆盖了新指令。</strong></p>
+      <p>解决方法：清空 <code>modeInstructions</code> 缓存，确保 agent 优先读取最新的 <code>.agent.md</code> 文件。</p>
+      <img src="./image/image-27.png" alt="清除缓存" class="article-img" />
+    </div>
+
+    <!-- Step 11 -->
+    <div class="step-card" id="step11">
+      <div class="step-num">11</div>
+      <h3 style="border:none;padding:0;margin:0 0 12px">接入 CI：在 S3 上传前生成 Diff HTML</h3>
+      <div class="prompt-box">
+        <strong>提示词：</strong>执行 code coverage 的时候，是否会存在 previous_results lcov-report 这两个文件，code coverage 结果上传 S3 前，是否可以执行 reporter.js 来生成 diff html 并一起上传到 S3
+      </div>
+      <p>Copilot 确认了在 CI buildspec 中可以直接在 <code>nyc report</code> 之后插入 <code>node reporter.js</code>，将 Diff HTML 与 lcov 报告一起归档到 S3，<strong>使 CI 流水线也能自动产出季度对比报告</strong>。</p>
+      <img src="./image/image-28.png" alt="CI 集成" class="article-img" />
+    </div>
+
+    <!-- Step 12 -->
+    <div class="step-card" id="step12">
+      <div class="step-num">12</div>
+      <h3 style="border:none;padding:0;margin:0 0 12px">整合重构：将公共方法收拢到 reporter-core.js，清除死代码</h3>
+      <div class="prompt-box">
+        <strong>提示词：</strong>整合这个 SKILL 将公共方法提取出来
+      </div>
+      <p>Copilot 分析三个 JS 文件后发现两处结构性问题：</p>
+      <h4>问题一：reporter.js 存在 5 个死代码函数</h4>
+      <p><code>reporter-core.js</code> 已经是唯一的公共函数库，但 <code>reporter.js</code> 里还留有内联定义：<code>parseFileRows</code> / <code>parseFileSummary</code> / <code>parseLeafSource</code> / <code>computeLineDiff</code> / <code>buildDrillDownData</code>。更严重的是这些函数引用了 <code>cheerio</code> 变量，但顶部根本没有 <code>require('cheerio')</code>——<strong>一旦被调用就会抛 ReferenceError</strong>。</p>
+      <h4>问题二：index.js 存在错误 import 和重复变量</h4>
+      <pre><button class="copy-btn" onclick="copyCode(this)">复制</button><code class="language-javascript">// 修复前
+const path   = require('fs')        // ← 把 fs 赋给了 path（错误！）
+const fs     = require('fs')
+const ROOT_DIR     = path.resolve ? ... // ← 从未使用
+const PLATFORM_DIR = ...               // ← 从未使用
+const pathMod = require('path')        // ← 与上面重复
+const ROOT     = pathMod.resolve(...)  // ← 才是真正被用到的
+const PLATFORM = pathMod.join(...)</code></pre>
+      <p><strong>修复后</strong>：三个文件均通过 <code>node --check</code> 语法验证，架构单一职责现在清晰了：</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>文件</th><th>职责</th></tr></thead>
+          <tbody>
+            <tr><td><code>reporter-core.js</code></td><td><strong>唯一</strong>的公共方法库（解析 lcov、构建 HTML、diff 计算）</td></tr>
+            <tr><td><code>reporter.js</code></td><td>薄包装层：读路径 → 调 core.* → 写 JSON/HTML</td></tr>
+            <tr><td><code>index.js</code></td><td>编排层：archive → cypress → nyc → reporter</td></tr>
+            <tr><td><code>run_parallel_workers.sh</code></td><td>并行分片 → 合并 → 调 nyc → 调 reporter</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Step 13 -->
+    <div class="step-card" id="step13">
+      <div class="step-num">13</div>
+      <h3 style="border:none;padding:0;margin:0 0 12px">修复 Windows 路径问题（run_parallel_workers.sh）</h3>
+      <p><strong>触发场景：</strong>在 Windows 下用 Git Bash 执行并行脚本时报错：</p>
+      <pre><button class="copy-btn" onclick="copyCode(this)">复制</button><code class="language-bash">Error: ENOENT: no such file or directory,
+  open 'C:\c\Users\XiaohangFeng\...\coverage-review-timing.json'</code></pre>
+      <p><strong>根因：</strong>Git Bash 的路径格式是 <code>/c/Users/...</code>，但 Windows 上的 Node.js 只认 <code>C:\Users\...</code>，所以 <code>C:\c\Users\...</code> 路径拼接出错。</p>
+      <p><strong>修复方案：</strong></p>
+      <pre><button class="copy-btn" onclick="copyCode(this)">复制</button><code class="language-bash"># 新增：用 cygpath 将 bash 路径转换为 Windows 路径
+if command -v cygpath >/dev/null 2>&1; then
+  TIMING_FILE_WIN="$(cygpath -w "$OUT_DIR/coverage-review-timing.json")"
+else
+  TIMING_FILE_WIN="$OUT_DIR/coverage-review-timing.json"
+fi
+export TIMING_FILE_WIN
+
+# 改为单引号 JS，通过 process.env 读取路径
+node -e '
+  const fs = require("fs");
+  fs.writeFileSync(process.env.TIMING_FILE_WIN, JSON.stringify({
+    agent_started_at: process.env.STARTED_AT,
+  }, null, 2));
+'</code></pre>
+      <p><span class="key-point">关键点</span><code>cygpath -w</code> 将 <code>/c/Users/...</code> 转换为 <code>C:\Users\...</code>，改用 <code>process.env</code> 传参，彻底避免路径污染。在原生 Linux/macOS 环境下 <code>cygpath</code> 不存在，走 fallback 分支，完全兼容 CI 环境。</p>
+    </div>
+
+    <!-- Step 14 -->
+    <div class="step-card" id="step14">
+      <div class="step-num">14</div>
+      <h3 style="border:none;padding:0;margin:0 0 12px">修复：Environment Setup 完成后自动继续执行 Phase 2</h3>
+      <p><strong>触发场景：</strong>在本地环境未启动时运行 Quarterly Coverage Review，Agent 在调用 Environment Setup 并等待其完成后，没有自动继续执行 Phase 2（运行 Cypress），而是停在 Phase 1 等待用户再次触发。</p>
+      <p><strong>根因：</strong><code>quarterly_coverage_review.agent.md</code> 的 Phase 1 Agent implementation 描述中，只说明了「调用 Environment Setup 并等待其确认健康」，但没有明确指定「成功后立即继续」，导致 Agent 在等待阶段结束后进入悬空状态。</p>
+      <p><strong>修复方案：</strong>将原来的 Phase 1 描述：</p>
+      <pre><button class="copy-btn" onclick="copyCode(this)">复制</button><code class="language-text">- If the command prints anything else, the agent will invoke the `Environment Setup` agent
+  and wait for it to confirm both server and client are healthy before continuing.</code></pre>
+      <p>更新为：</p>
+      <pre><button class="copy-btn" onclick="copyCode(this)">复制</button><code class="language-text">- If the command prints anything else, the agent will invoke the `Environment Setup` agent
+  and wait for it to confirm both server and client are healthy before continuing.
+  Once Environment Setup reports success, immediately and automatically proceed to Phase 2
+  — do NOT stop, do NOT ask the user for confirmation.</code></pre>
+      <p><span class="key-point">关键点</span>通过在 agent 文件中明确写出「成功后立即自动进入 Phase 2，不停顿、不询问用户」，确保 Agent 在环境准备好后无缝衔接后续流程，避免用户需要手动再次触发。</p>
+    </div>
+
+    <hr/>
+
+    <!-- ─── 3. 整体架构 ─── -->
+    <h2 id="arch">整体架构</h2>
+    <blockquote>开发过程中使用的模型：初代创建用 <strong>GPT-4.1</strong>，后期功能迭代和并行化优化主要使用 <strong>Claude Sonnet 4.6</strong>。</blockquote>
+    <div class="mermaid-wrap">
+      <div class="mermaid">
+graph TD
+    User["用户 / CI"]
+    Agent["Quarterly Coverage Review\n.agent.md"]
+    EnvSetup["Environment Setup\n.agent.md"]
+    Skill["coverage-report Skill\nSKILL.md"]
+    IndexJS["index.js\n(串行编排)"]
+    ParallelSH["run_parallel_workers.sh\n(并行编排)"]
+    ReporterJS["reporter.js\n(产物生成)"]
+    CoreJS["reporter-core.js\n(纯函数库)"]
+    NYC["nyc report\n(lcov HTML)"]
+    Cypress["Cypress + @cypress/code-coverage\n(.nyc_output)"]
+    Output["coverage-diff-YYYY-MM-DD.html\ncoverage-diff-YYYY-MM-DD.json"]
+
+    User -->|"触发 (可带 --spec / --parallel)"| Agent
+    Agent -->|"curl localhost:3000 ≠ 200\n调用环境初始化"| EnvSetup
+    EnvSetup -->|"✅ 健康确认\n自动继续 Phase 2"| Skill
+    Agent -->|"curl localhost:3000 = 200\n直接加载"| Skill
+    Skill -->|"串行调用"| IndexJS
+    Skill -->|"并行调用"| ParallelSH
+    ParallelSH -->|"N 个 worker"| Cypress
+    IndexJS -->|"单 worker"| Cypress
+    Cypress -->|".nyc_output"| NYC
+    ParallelSH -->|"合并后"| NYC
+    NYC --> ReporterJS
+    ReporterJS -->|"使用"| CoreJS
+    CoreJS -->|"输出"| Output
+      </div>
+    </div>
+
+    <hr/>
+
+    <!-- ─── 4. 核心文件职责 ─── -->
+    <h2 id="files">核心文件职责</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>文件</th><th>层次</th><th>职责</th></tr></thead>
+        <tbody>
+          <tr><td><code>quarterly_coverage_review.agent.md</code></td><td>Agent 层</td><td>定义 Agent 的角色、参数、约束和工作流程</td></tr>
+          <tr><td><code>SKILL.md</code></td><td>Skill 层</td><td>将 5 个执行阶段用自然语言规范化，供 Agent 读取执行</td></tr>
+          <tr><td><code>index.js</code></td><td>编排层（串行）</td><td>按顺序执行 5 个阶段，适合单 spec 或调试场景</td></tr>
+          <tr><td><code>run_parallel_workers.sh</code></td><td>编排层（并行）</td><td>将 spec 列表拆分为 N 块，并行跑 Cypress，合并覆盖数据</td></tr>
+          <tr><td><code>reporter.js</code></td><td>生成层</td><td>薄包装层：读取路径常量，调用 core.* 输出带时间戳的 HTML+JSON 产物</td></tr>
+          <tr><td><code>reporter-core.js</code></td><td>核心库层</td><td><strong>唯一公共函数库</strong>：cheerio DOM 解析、delta 计算、BFS 钻取、SVG 柱状图生成、HTML 渲染</td></tr>
+          <tr><td><code>parse_and_upload_coverage_report.js</code></td><td>持久化层</td><td>将覆盖率汇总写入 QA 数据库</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr/>
+
+    <!-- ─── 5. 执行流程 ─── -->
+    <h2 id="phases">执行流程详解（5 个阶段）</h2>
+    <div class="phase-timeline">
+      <div class="phase-item">
+        <div class="phase-num">Phase 0</div>
+        <div class="phase-name">记录时间</div>
+        <div class="phase-desc">写入 timing.json</div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-num">Phase 1</div>
+        <div class="phase-name">归档快照</div>
+        <div class="phase-desc">previous_results/</div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-num">Phase 2</div>
+        <div class="phase-name">运行 Cypress</div>
+        <div class="phase-desc">coverage=true</div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-num">Phase 3</div>
+        <div class="phase-name">生成 lcov</div>
+        <div class="phase-desc">nyc report</div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-num">Phase 4</div>
+        <div class="phase-name">写入 QA DB</div>
+        <div class="phase-desc">（可选）</div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-num">Phase 5</div>
+        <div class="phase-name">Diff 报告</div>
+        <div class="phase-desc">HTML + JSON</div>
+      </div>
+    </div>
+
+    <h3>Phase 0 — 记录开始时间</h3>
+    <p>写入 <code>data/localCodeCoverageReport/coverage-review-timing.json</code>，记录 <code>agent_started_at</code> 和季度信息（如 <code>2026-Q2</code>）。完成后更新 <code>agent_finished_at</code>。</p>
+
+    <h3>Phase 1 — 归档上次快照</h3>
+    <p>将 <code>clarify-platform/coverage/lcov-report/</code> 复制到 <code>coverage/previous_results/</code>，确保对比时有基准。<strong>这是最容易被跳过却最关键的一步。</strong></p>
+
+    <h3>Phase 2 — 运行 Cypress（含覆盖率采集）</h3>
+    <pre><button class="copy-btn" onclick="copyCode(this)">复制</button><code class="language-bash">npx cypress run --env coverage=true</code></pre>
+    <p><code>@cypress/code-coverage</code> 插件在测试结束后将 Istanbul 数据写入 <code>.nyc_output/</code>。</p>
+
+    <h3>Phase 3 — 生成 lcov HTML 报告</h3>
+    <pre><button class="copy-btn" onclick="copyCode(this)">复制</button><code class="language-bash">npx nyc --nycrc-path=config/.nycrc report --reporter=lcov --reporter=text-summary</code></pre>
+    <p>nyc 读取 <code>.nyc_output/</code> 中的 JSON，输出 <code>coverage/lcov-report/index.html</code>。</p>
+
+    <h3>Phase 4 — 写入 QA 数据库（可选）</h3>
+    <p>将覆盖率汇总持久化，供历史趋势查询。</p>
+
+    <h3>Phase 5 — 生成 Agent 专属 Diff 报告</h3>
+    <p><code>reporter.js</code> 调用 <code>reporter-core.js</code>，生成独立的、带完整可视化的 HTML 报告。</p>
+
+    <hr/>
+
+    <!-- ─── 6. 并行模式 ─── -->
+    <h2 id="parallel">并行模式</h2>
+    <p>当 spec 数量较大时，使用 <code>run_parallel_workers.sh --parallel N</code> 启动并行模式：</p>
+    <pre><button class="copy-btn" onclick="copyCode(this)">复制</button><code class="language-text">全量 spec (数百个)
+       │
+       ▼
+  按 N 等分切割
+       │
+  ┌────┴────┐
+  │  ...    │
+Worker 0  Worker N-1
+(各自写到          )
+.nyc_output_worker_0  .nyc_output_worker_N-1
+  │               │
+  └──────┬─────────┘
+         ▼
+   cp 合并到 .nyc_output/
+         │
+         ▼
+   npx nyc report
+         │
+         ▼
+   reporter.js → 产物</code></pre>
+    <p><span class="key-point">关键设计</span>每个 worker 通过 <code>NYC_OUTPUT_DIR</code> 环境变量指定独立输出目录，完全避免并发写文件冲突。</p>
+    <p><span class="key-point">Windows 兼容</span>脚本通过 <code>cygpath -w</code> 将 Git Bash 路径转换为 Windows 原生路径，再通过 <code>process.env</code> 传给 Node.js，避免 <code>node -e</code> 内联脚本 ENOENT 错误。</p>
+
+    <hr/>
+
+    <!-- ─── 7. 报告对比 ─── -->
+    <h2 id="compare">Agent 生成的 Coverage Diff 图 vs nyc 原生报告</h2>
+    <p>两套报告<strong>都基于同一份覆盖率数据</strong>，但设计目标截然不同。</p>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="c-title">🛠 nyc 原生报告</div>
+        <div class="c-row"><span>数据来源</span><span>.nyc_output/*.json</span></div>
+        <div class="c-row"><span>差值信息</span><span class="tag-no">❌ 无</span></div>
+        <div class="c-row"><span>可视化程度</span><span class="tag-warn">基础</span></div>
+        <div class="c-row"><span>源码钻取</span><span class="tag-yes">✅ 精确到每行</span></div>
+        <div class="c-row"><span>文件过滤</span><span class="tag-no">❌</span></div>
+        <div class="c-row"><span>输出格式</span><span>单一 HTML</span></div>
+        <div class="c-row"><span>主要用途</span><span>调试覆盖盲区</span></div>
+      </div>
+      <div class="compare-card">
+        <div class="c-title">✨ Agent Diff 报告</div>
+        <div class="c-row"><span>数据来源</span><span>解析 lcov HTML</span></div>
+        <div class="c-row"><span>差值信息</span><span class="tag-yes">✅ 精确 delta</span></div>
+        <div class="c-row"><span>可视化程度</span><span class="tag-yes">丰富</span></div>
+        <div class="c-row"><span>源码钻取</span><span class="tag-warn">⚠️ 行级 diff</span></div>
+        <div class="c-row"><span>文件过滤</span><span class="tag-yes">✅ 按状态筛选</span></div>
+        <div class="c-row"><span>输出格式</span><span>HTML + JSON</span></div>
+        <div class="c-row"><span>主要用途</span><span>季度趋势汇报</span></div>
+      </div>
+    </div>
+
+    <h3>如何选择？</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>场景</th><th>推荐使用</th></tr></thead>
+        <tbody>
+          <tr><td>本地调试：某个文件哪些行没被覆盖</td><td>nyc 原生报告</td></tr>
+          <tr><td>季度汇报：本季度覆盖率整体涨了多少</td><td>Agent Diff 报告</td></tr>
+          <tr><td>CI 流水线：自动判断覆盖率是否达标</td><td>Agent Diff JSON 产物</td></tr>
+          <tr><td>向 QM/PM 展示趋势</td><td>Agent Diff 报告</td></tr>
+          <tr><td>查找某个具体函数的覆盖状态</td><td>nyc 原生报告</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr/>
+
+    <!-- ─── 8. 输出产物 ─── -->
+    <h2 id="output">输出产物一览</h2>
+    <div class="output-tree">
+<span class="dir">clarify-platform/</span><br/>
+&nbsp;&nbsp;<span class="dir">coverage/</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">lcov-report/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ← nyc 原生报告<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file-html">index.html</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">&lt;module&gt;/index.html</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">&lt;module&gt;/&lt;file&gt;.html</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">previous_results/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ← 本次运行前的快照归档<br/>
+<br/>
+<span class="dir">data/localCodeCoverageReport/</span><br/>
+&nbsp;&nbsp;<span class="file-html">coverage-diff-YYYY-MM-DD-HHMM.html</span> &nbsp; <span class="note">← Agent Diff 可视化报告 ✨</span><br/>
+&nbsp;&nbsp;<span class="file-json">coverage-diff-YYYY-MM-DD-HHMM.json</span> &nbsp; <span class="note">← Agent Diff 机器可读产物 ✨</span><br/>
+&nbsp;&nbsp;<span class="file-json">coverage-review-timing.json</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ← 运行时间记录<br/>
+&nbsp;&nbsp;<span class="file-log">run-YYYY-MM-DD-HHMM.log</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ← 并行模式下的详细日志<br/>
+&nbsp;&nbsp;<span class="file-log">worker_0.log / worker_1.log ...</span> &nbsp;&nbsp;&nbsp; ← 各 worker 的 Cypress 输出
+    </div>
+
+    <h3>JSON 产物结构示例</h3>
+    <pre><button class="copy-btn" onclick="copyCode(this)">复制</button><code class="language-json">{
+  "quarter": "Q2 2026",
+  "specLabel": "all-specs",
+  "hasPrev": true,
+  "diff": {
+    "Statements": { "previous": 72.5, "current": 74.1, "delta": 1.6 },
+    "Branches":   { "previous": 60.0, "current": 61.2, "delta": 1.2 },
+    "Functions":  { "previous": 70.0, "current": 71.5, "delta": 1.5 },
+    "Lines":      { "previous": 73.0, "current": 74.8, "delta": 1.8 }
+  }
+}</code></pre>
+
+    <hr/>
+
+    <!-- ─── 9. 快速上手 ─── -->
+    <h2 id="quickstart">如何快速上手</h2>
+    <h3>9.1 前提条件</h3>
+    <ul>
+      <li>本地 Clarify Platform 已运行（server + client）</li>
+      <li><code>QA_DATABASE_URL</code> 已设置（可选，仅写库时需要）</li>
+    </ul>
+
+    <h3>9.2 全量运行（推荐并行）</h3>
+    <p>在 VS Code Copilot Chat 中输入：</p>
+    <pre><button class="copy-btn" onclick="copyCode(this)">复制</button><code class="language-text">@Quarterly Coverage Review 运行季度覆盖率检查，--parallel 3</code></pre>
+    <p>或在终端直接运行脚本：</p>
+    <pre><button class="copy-btn" onclick="copyCode(this)">复制</button><code class="language-bash"># 串行（调试/单 spec）
+node .github/skills/coverage-report/scripts/index.js \
+  --spec "cypress/e2e/code_coverage/analysis_builder/my_spec.js"
+
+# 并行（全量 spec，3 个 worker）
+bash .github/skills/coverage-report/scripts/run_parallel_workers.sh \
+  --parallel 3 \
+  --specs "cypress/e2e/code_coverage/**/*.js"</code></pre>
+
+    <h3>9.3 仅重新生成报告（跳过 Cypress 运行）</h3>
+    <p>如果 <code>.nyc_output</code> 已经存在（测试已经跑过），可以只执行后半段：</p>
+    <pre><button class="copy-btn" onclick="copyCode(this)">复制</button><code class="language-bash">cd clarify-platform
+npx nyc --nycrc-path=config/.nycrc report --reporter=lcov --reporter=text-summary
+
+cd ..
+node .github/skills/coverage-report/scripts/reporter.js</code></pre>
+
+    <hr/>
+
+    <!-- ─── 10. 未来改进 ─── -->
+    <h2 id="future">未来改进方向</h2>
+    <div class="future-grid">
+      <div class="future-item">
+        <div class="f-title">📈 趋势时间线</div>
+        <div class="f-desc">将历史多个 JSON 产物聚合，生成跨季度折线图</div>
+      </div>
+      <div class="future-item">
+        <div class="f-title">🚦 覆盖率门控</div>
+        <div class="f-desc">在 CI 中读取 JSON 产物，若 delta &lt; -1% 则阻断合并</div>
+      </div>
+      <div class="future-item">
+        <div class="f-title">🎯 增量覆盖率</div>
+        <div class="f-desc">只对 PR 中修改的文件计算覆盖率变化（结合 affected-specs skill）</div>
+      </div>
+      <div class="future-item">
+        <div class="f-title">💬 Slack 通知</div>
+        <div class="f-desc">报告生成后自动调用 Generate Reports agent 发送摘要</div>
+      </div>
+      <div class="future-item">
+        <div class="f-title">🔍 源码行 diff 增强</div>
+        <div class="f-desc">将 reporter 中已有的 diffLines 数据在 HTML 中完整展示</div>
+      </div>
+    </div>
+
+    <hr/>
+    <p style="text-align:center;color:var(--text-muted);font-size:13px;margin-top:40px;">
+      本文档基于 <code>agent-test/README.md</code> 中记录的真实开发日志及截图整理，由 GitHub Copilot（Claude Sonnet 4.6）辅助生成。
+    </p>
+
+  </main>
+</div>
+
+<script>
+  // ─── Mermaid ───
+  mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+
+  // ─── Highlight.js ───
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('pre code').forEach(el => {
+      hljs.highlightElement(el);
+    });
+  });
+
+  // ─── 阅读进度条 ───
+  window.addEventListener('scroll', () => {
+    const el = document.documentElement;
+    const pct = (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    updateTocActive();
+  });
+
+  // ─── 目录高亮 ───
+  function updateTocActive() {
+    const links = document.querySelectorAll('#toc-list a');
+    let current = '';
+    document.querySelectorAll('[id]').forEach(section => {
+      if (section.getBoundingClientRect().top <= 80) current = section.id;
+    });
+    links.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+
+  // ─── 深色模式 ───
+  function toggleTheme() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+    document.getElementById('theme-btn').textContent = isDark ? '🌙' : '☀️';
+    // 重新渲染 mermaid
+    if (!isDark) {
+      mermaid.initialize({ startOnLoad: false, theme: 'dark', securityLevel: 'loose' });
+    } else {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+    }
+  }
+
+  // ─── 复制代码 ───
+  function copyCode(btn) {
+    const code = btn.nextElementSibling.innerText;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.textContent = '已复制 ✓';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
+</body>
+</html>
