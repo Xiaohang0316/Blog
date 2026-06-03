@@ -71,3 +71,26 @@ Demo 思路：
 实现一个 mini Test Adapter（用 Node + TypeScript）
 
 让 VS Code 识别自定义测试文件并展示结果
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+WARN[0000] /home/tp10/Code/kenko-blog-repo/docker-compose.yml: `version` is obsolete 
+[+] Building 135.4s (2/2) FINISHED                                                                    docker:desktop-linux
+ => [app internal] load build definition from Dockerfile                                                              0.0s
+ => => transferring dockerfile: 717B                                                                                  0.0s
+ => ERROR [app internal] load metadata for docker.io/library/node:20-alpine                                         135.3s
+------
+ > [app internal] load metadata for docker.io/library/node:20-alpine:
+------
+failed to solve: node:20-alpine: failed to resolve source metadata for docker.io/library/node:20-alpine: failed to do request: Head "https://registry-1.docker.io/v2/library/node/manifests/20-alpine": dialing registry-1.docker.io:443 container via direct connection because  has no HTTPS proxy: connecting to 104.244.46.57:443: dial tcp 104.244.46.57:443: connect: connection timed out
